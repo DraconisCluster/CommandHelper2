@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="adams.im.HelperCopy">
+  <grid id="27dc6" binding="Window" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="1" y="8" width="1196" height="475"/>
+    </constraints>
+    <properties>
+      <alignmentX value="0.1"/>
+      <focusTraversalPolicyProvider value="true"/>
+      <foreground color="-10525594"/>
+      <maximumSize width="825" height="280"/>
+      <minimumSize width="825" height="280"/>
+      <preferredSize width="825" height="280"/>
+    </properties>
+    <border type="none">
+      <font/>
+      <title-color color="-7105901"/>
+    </border>
+    <children>
+      <tabbedpane id="6fb61" binding="tabbedPane1" default-binding="true">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <enabled value="true"/>
+          <toolTipText value="Commands, might be useful for tickets or something"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="78db5" layout-manager="GridLayoutManager" row-count="15" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Commands"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="9feaa" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="3" row-span="14" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <toolbar id="7c15e">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="8772a" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="c0bd0" class="javax.swing.JButton" binding="gridbackupListButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Gridbackup List"/>
+                          <toolTipText value="List gridbackups"/>
+                        </properties>
+                      </component>
+                      <component id="ade7b" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="38d11" class="javax.swing.JButton" binding="hangarListButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Hangar List"/>
+                          <toolTipText value="List hangar"/>
+                        </properties>
+                      </component>
+                      <component id="654ad" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="8c03a" class="javax.swing.JButton" binding="ownedGridsListButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Owned Grids List"/>
+                          <toolTipText value="List the grids a player has ownership of"/>
+                        </properties>
+                      </component>
+                      <component id="2cc1b" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties>
+                          <inheritsPopupMenu value="false"/>
+                        </properties>
+                      </component>
+                      <component id="127f5" class="javax.swing.JButton" binding="createdGridsListButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Created Grids List"/>
+                          <toolTipText value="List the grids a player has created"/>
+                        </properties>
+                      </component>
+                      <component id="97517" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </toolbar>
+                  <toolbar id="f1ec6">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="90200" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="c0149" class="javax.swing.JButton" binding="scripterButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <contentAreaFilled value="true"/>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Scripter"/>
+                          <toolTipText value="Set scripter rank"/>
+                        </properties>
+                      </component>
+                      <component id="17ee2" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="2862a" class="javax.swing.JButton" binding="transferGridButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Transfer Grid"/>
+                          <toolTipText value="Run while looking at a grid to transfer to player"/>
+                        </properties>
+                      </component>
+                      <component id="b8ad3" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="f855e" class="javax.swing.JButton" binding="getSteamID64Button" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Get SteamID64"/>
+                          <toolTipText value="Get player steamid"/>
+                        </properties>
+                      </component>
+                      <component id="2376" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="6f124" class="javax.swing.JButton" binding="listPlayersButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="List Players"/>
+                          <toolTipText value="Get a list of players on the server"/>
+                        </properties>
+                      </component>
+                      <component id="7a72b" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </toolbar>
+                  <toolbar id="5e97e">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="5748e" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="c80ff" class="javax.swing.JButton" binding="onlineServersButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <inheritsPopupMenu value="false"/>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Online Servers"/>
+                          <toolTipText value="See online servers"/>
+                        </properties>
+                      </component>
+                      <component id="a3d8c" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="d81fa" class="javax.swing.JButton" binding="clusterUptimeButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Controller Uptime"/>
+                          <toolTipText value="Get uptime of the Nexus controllers"/>
+                        </properties>
+                      </component>
+                      <component id="b1478" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="4eca1" class="javax.swing.JButton" binding="checkBlocklimitsButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Check Blocklimits"/>
+                          <toolTipText value="Check blocklimits of a player"/>
+                        </properties>
+                      </component>
+                      <component id="62828" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                      <component id="e2848" class="javax.swing.JButton" binding="updateBlocklimitsButton" default-binding="true">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="125" height="50"/>
+                          <minimumSize width="125" height="50"/>
+                          <preferredSize width="125" height="50"/>
+                          <text value="Update Blocklimits"/>
+                          <toolTipText value="Update a players blocklimts"/>
+                        </properties>
+                      </component>
+                      <component id="430fc" class="javax.swing.JToolBar$Separator">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </toolbar>
+                  <component id="b8eec" class="javax.swing.JLabel" binding="ClipboardOutput">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="41eb0" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="14" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="f3c75" class="javax.swing.JButton" binding="clearAdminSettingsButton" default-binding="true">
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="60"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="Clear Admin Settings"/>
+                      <toolTipText value="YOU MUST RUN THIS AFTER LEAVING ADMIN MODE"/>
+                    </properties>
+                  </component>
+                  <component id="16602" class="javax.swing.JButton" binding="adminModeButton" default-binding="true">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="60"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <text value="Admin Mode"/>
+                      <toolTipText value="Set admin rank"/>
+                      <verifyInputWhenFocusTarget value="true"/>
+                    </properties>
+                  </component>
+                  <component id="22e4f" class="javax.swing.JButton" binding="playerModeButton" default-binding="true">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="60"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <borderPainted value="true"/>
+                      <text value="Player Mode"/>
+                      <toolTipText value="Remove admin rank"/>
+                    </properties>
+                  </component>
+                  <hspacer id="b3d12">
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                </children>
+              </grid>
+              <component id="f5c52" class="javax.swing.JTextField" binding="PlayerName">
+                <constraints>
+                  <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="21fe3" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Playername/SteamID64:   "/>
+                </properties>
+              </component>
+              <component id="94a43" class="javax.swing.JComboBox" binding="ServerSelect">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <doubleBuffered value="true"/>
+                  <lightWeightPopupEnabled value="true"/>
+                  <maximumRowCount value="20"/>
+                  <model>
+                    <item value="!"/>
+                    <item value="DX"/>
+                    <item value="DXL"/>
+                    <item value="DX1"/>
+                    <item value="DX2"/>
+                    <item value="DX3"/>
+                    <item value="DX4"/>
+                    <item value="DX5"/>
+                    <item value="DX6"/>
+                    <item value="--"/>
+                    <item value="D"/>
+                    <item value="D1"/>
+                    <item value="D2"/>
+                    <item value="D3"/>
+                    <item value="D4"/>
+                    <item value="D5"/>
+                    <item value="--"/>
+                    <item value="##"/>
+                  </model>
+                  <toolTipText value="Select a server to run the command on"/>
+                </properties>
+              </component>
+              <component id="45c6f" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="  Server:   "/>
+                </properties>
+              </component>
+              <component id="67ce9" class="javax.swing.JButton" binding="clearPlayerButton">
+                <constraints>
+                  <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Clear"/>
+                  <toolTipText value="Clear playername"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+          <grid id="1f4b1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Grid Backup"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <toolbar id="ef235">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="-1" height="50"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <floatable value="false"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="dfcd0" class="javax.swing.JToolBar$Separator">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="9d383" class="javax.swing.JButton" binding="clearBackupButton">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="78" height="50"/>
+                      <minimumSize width="78" height="50"/>
+                      <preferredSize width="78" height="50"/>
+                      <text value="Clear"/>
+                    </properties>
+                  </component>
+                  <component id="4b19e" class="javax.swing.JToolBar$Separator">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                  <component id="ebb8a" class="javax.swing.JButton" binding="parseButton" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <maximumSize width="78" height="50"/>
+                      <minimumSize width="78" height="50"/>
+                      <preferredSize width="78" height="50"/>
+                      <text value="Parse"/>
+                    </properties>
+                  </component>
+                  <component id="53f09" class="javax.swing.JToolBar$Separator">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </toolbar>
+              <scrollpane id="b764d">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3ac57" class="javax.swing.JTextArea" binding="gridBackupEntry">
+                    <constraints/>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="eed0c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="xelA Tags"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children/>
+          </grid>
+          <grid id="9110a" layout-manager="GridLayoutManager" row-count="8" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Settings"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="8c9c" class="javax.swing.JTextField" binding="AdminID">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="6" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="67a9c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="2" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Enter  your SteamID64 and click save"/>
+                </properties>
+              </component>
+              <vspacer id="54c51">
+                <constraints>
+                  <grid row="5" column="5" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="8741a">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="891d3">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <vspacer id="ce775">
+                <constraints>
+                  <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <hspacer id="d1b5e">
+                <constraints>
+                  <grid row="4" column="3" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <component id="29663" class="javax.swing.JButton" binding="AdminIDSaveButton">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                    <minimum-size width="50" height="20"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value="Save"/>
+                </properties>
+              </component>
+              <component id="ae066" class="javax.swing.JCheckBox" binding="darkModeCheckBox" default-binding="true">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="120" height="50"/>
+                    <preferred-size width="120" height="50"/>
+                    <maximum-size width="120" height="50"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <selected value="false"/>
+                  <text value="Dark Mode"/>
+                </properties>
+              </component>
+              <component id="f8cf7" class="javax.swing.JLabel" binding="AdminIDSaveNotify">
+                <constraints>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>
