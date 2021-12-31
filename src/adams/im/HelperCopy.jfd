@@ -15,6 +15,7 @@ new FormModel {
 				name: "tabbedPane1"
 				"enabled": true
 				"toolTipText": "Commands, might be useful for tickets or something"
+				addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "settingsLoadConfigs", true ) )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 					"$columnCount": 5
 					"$rowCount": 15
@@ -666,6 +667,23 @@ new FormModel {
 						"hSizePolicy": 0
 						"vSizePolicy": 0
 					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane2"
+						add( new FormComponent( "javax.swing.JTextArea" ) {
+							name: "serversTextArea"
+							"lineWrap": true
+							"wrapStyleWord": true
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"row": 4
+						"colSpan": 2
+						"rowSpan": 3
+						"fill": 3
+						"anchor": 9
+						"hSizePolicy": 0
+						"vSizePolicy": 0
+					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer1"
 						auxiliary() {
@@ -730,6 +748,7 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "AdminIDSaveButton"
 						"text": "Save"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "AdminStuffSave", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
 						"row": 7

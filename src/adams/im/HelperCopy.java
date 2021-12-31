@@ -1,6 +1,7 @@
 package adams.im;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -11,14 +12,16 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Properties;
 
 
 public class HelperCopy extends JPanel {
 
     JWindow window = new JWindow();
+    static HelperConfig config;
 
     public HelperCopy() {
         // Gridbackup
@@ -72,7 +75,7 @@ public class HelperCopy extends JPanel {
         // blocklimit update
         updateBlocklimitsButton.addActionListener(e -> CopyToClipboard(checkServer() + "blocklimit update -player=" + checkPlayer()));
 
-        darkModeCheckBox.addActionListener(e -> JOptionPane.showMessageDialog(window, "ONLY DARK MODE! FUCK YOU!"));
+        darkModeCheckBox.addActionListener(e -> JOptionPane.showMessageDialog(window, "Click save and restart to apply dark mode"));
     }
 
     public void gridbackupParse() {
@@ -148,7 +151,7 @@ public class HelperCopy extends JPanel {
             case "D6" -> "d6 ";
             case "##" -> "## ";
 
-            default -> "!";
+            default -> ServerSelect.getSelectedItem().toString();
         };
     }
 
@@ -157,32 +160,67 @@ public class HelperCopy extends JPanel {
         return '"' + player + '"';
     }
 
+    public void writeConfig(HelperConfig config) {
+
+        try {
+            FileOutputStream fileOut = new FileOutputStream("helperConfig.txt");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(config);
+            objectOut.close();
+            System.out.println("The Object  was succesfully written to a file");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static HelperConfig readConfig() {
+
+        try {
+            FileInputStream fileIn = new FileInputStream("helperConfig.txt");
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            Object obj = objectIn.readObject();
+
+            System.out.println("The Object has been read from the file");
+            objectIn.close();
+            return (HelperConfig) obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 
+        File configFile = new File("helperConfig.txt");
+        configFile.createNewFile();
+        String[] servers = {                    "!",
+                "DX",
+                "DXL",
+                "DX1",
+                "DX2",
+                "DX3",
+                "DX4",
+                "DX5",
+                "DX6",
+                "--",
+                "D",
+                "D1",
+                "D2",
+                "D3",
+                "D4",
+                "D5",
+                "--",
+                "##"};
+        config = readConfig();
 
-        /*Properties config = new Properties();
-        File configFile = new File("helperConfig.properties");
-        if (!configFile.exists()) {
-            configFile.createNewFile();
-        }
-        FileReader configRead = new FileReader("helperConfig.properties");
-        System.out.println(configRead.read());
-        config.list(System.out);
-        FileWriter configWrite = new FileWriter("helperConfig.properties");
 
-        config.load(configRead);
-        configRead.close();
-
-        if(config.isEmpty()){
-            config.setProperty("adminID", "");
-            config.setProperty("darkMode", "false");
-            config.store(configWrite, "Command Helper 2 v1.1.0 Configuration");
-            configWrite.close();
-        }
-        */
-        //if(config.getProperty("darkMode") == "true") {
+        if(config.isDarkMode()) {
             FlatDarkLaf.setup();
-        //} else FlatIntelliJLaf.setup();
+        } else FlatIntelliJLaf.setup();
 
 
         JFrame frame = new JFrame("Command Helper 2 v1.1.0");
@@ -190,6 +228,7 @@ public class HelperCopy extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        
 
 
     }
@@ -266,6 +305,20 @@ public class HelperCopy extends JPanel {
         CopyToClipboard("/t time");
     }
 
+    private void AdminStuffSave(ActionEvent e) {
+        config.setAdminID(AdminID.getText());
+        config.setDarkMode(darkModeCheckBox.isSelected());
+        String[] servers = serversTextArea.getText().split("\n\r, \n, \r");
+        config.setServers(servers);
+        writeConfig(config);
+    }
+
+    private void settingsLoadConfigs(ChangeEvent e) {
+        AdminID.setText(config.getAdminID());
+        serversTextArea.setText(config.getServers());
+        darkModeCheckBox.setSelected(config.isDarkMode());
+    }
+
 
 
 
@@ -328,6 +381,8 @@ public class HelperCopy extends JPanel {
         var panel6 = new JPanel();
         AdminID = new JTextField();
         var label3 = new JLabel();
+        scrollPane2 = new JScrollPane();
+        serversTextArea = new JTextArea();
         var vSpacer1 = new Spacer();
         var vSpacer2 = new Spacer();
         var vSpacer3 = new Spacer();
@@ -344,19 +399,19 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax .
-        swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border
-        . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog"
-        , java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) , getBorder
-        () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java
-        . beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException
-        ( ) ;} } );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
+        EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing
+        . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,
+        java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
+        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )
+        throw new RuntimeException( ) ;} } );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
         {
             tabbedPane1.setEnabled(true);
             tabbedPane1.setToolTipText("Commands, might be useful for tickets or something");
+            tabbedPane1.addChangeListener(e -> settingsLoadConfigs(e));
 
             //======== panel1 ========
             {
@@ -897,6 +952,20 @@ public class HelperCopy extends JPanel {
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
+
+                //======== scrollPane2 ========
+                {
+
+                    //---- serversTextArea ----
+                    serversTextArea.setLineWrap(true);
+                    serversTextArea.setWrapStyleWord(true);
+                    scrollPane2.setViewportView(serversTextArea);
+                }
+                panel6.add(scrollPane2, new GridConstraints(4, 1, 3, 2,
+                    GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_FIXED,
+                    GridConstraints.SIZEPOLICY_FIXED,
+                    null, null, null));
                 panel6.add(vSpacer1, new GridConstraints(5, 5, 2, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
@@ -925,6 +994,7 @@ public class HelperCopy extends JPanel {
 
                 //---- AdminIDSaveButton ----
                 AdminIDSaveButton.setText("Save");
+                AdminIDSaveButton.addActionListener(e -> AdminStuffSave(e));
                 panel6.add(AdminIDSaveButton, new GridConstraints(7, 1, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -999,6 +1069,8 @@ public class HelperCopy extends JPanel {
     private JButton tTime;
     private JLabel tCopiedToClipboard;
     private JTextField AdminID;
+    private JScrollPane scrollPane2;
+    private JTextArea serversTextArea;
     private JButton AdminIDSaveButton;
     private JCheckBox darkModeCheckBox;
     private JLabel AdminIDSaveNotify;
