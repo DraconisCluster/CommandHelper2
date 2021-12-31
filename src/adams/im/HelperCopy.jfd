@@ -358,28 +358,10 @@ new FormModel {
 						"doubleBuffered": true
 						"lightWeightPopupEnabled": true
 						"maximumRowCount": 20
-						"model": new javax.swing.DefaultComboBoxModel {
-							selectedItem: "!"
-							addElement( "!" )
-							addElement( "DX" )
-							addElement( "DXL" )
-							addElement( "DX1" )
-							addElement( "DX2" )
-							addElement( "DX3" )
-							addElement( "DX4" )
-							addElement( "DX5" )
-							addElement( "DX6" )
-							addElement( "--" )
-							addElement( "D" )
-							addElement( "D1" )
-							addElement( "D2" )
-							addElement( "D3" )
-							addElement( "D4" )
-							addElement( "D5" )
-							addElement( "--" )
-							addElement( "##" )
-						}
 						"toolTipText": "Select a server to run the command on"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ServerSelect", true ) )
+						addEvent( new FormEvent( "java.awt.event.ItemListener", "itemStateChanged", "ServerSelectItemStateChanged", true ) )
+						addEvent( new FormEvent( "javax.swing.event.PopupMenuListener", "popupMenuWillBecomeVisible", "ServerSelectPopupMenuWillBecomeVisible", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
 						"anchor": 8
@@ -636,8 +618,8 @@ new FormModel {
 					"title": "xelA Tags"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
-					"$columnCount": 6
-					"$rowCount": 8
+					"$columnCount": 15
+					"$rowCount": 10
 				} ) {
 					name: "panel6"
 					auxiliary() {
@@ -647,25 +629,52 @@ new FormModel {
 						name: "AdminID"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 2
-						"colSpan": 6
+						"colSpan": 14
 						"anchor": 8
 						"fill": 1
 						"hSizePolicy": 6
 						"vSizePolicy": 0
 						"preferredSize": new java.awt.Dimension( 150, -1 )
+						"column": 1
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label3"
-						"text": "Enter  your SteamID64 and click save (save does nothing  yet lmfao, you have to enter it every time)"
+						"text": "Enter  your SteamID64 and click save."
 						auxiliary() {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"colSpan": 6
+						"colSpan": 14
 						"rowSpan": 2
 						"anchor": 8
 						"hSizePolicy": 0
 						"vSizePolicy": 0
+						"column": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": "Customize servers available in server select here"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"row": 3
+						"anchor": 8
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer10"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "Unless using default configs, use the prefixes for the servers (x0 instead of DXL, x1 instead of DX1, etc.)"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 3
+						"anchor": 8
 					} )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane2"
@@ -673,16 +682,17 @@ new FormModel {
 							name: "serversTextArea"
 							"lineWrap": true
 							"wrapStyleWord": true
+							"rows": 8
 						} )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
 						"row": 4
-						"colSpan": 2
-						"rowSpan": 3
+						"rowSpan": 4
 						"fill": 3
 						"anchor": 9
 						"hSizePolicy": 0
 						"vSizePolicy": 0
+						"colSpan": 4
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer1"
@@ -690,8 +700,8 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 5
-						"row": 5
+						"column": 14
+						"row": 6
 						"rowSpan": 2
 						"fill": 2
 						"hSizePolicy": 1
@@ -703,11 +713,12 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 6
-						"colSpan": 5
+						"row": 7
+						"colSpan": 13
 						"fill": 2
 						"hSizePolicy": 1
 						"vSizePolicy": 6
+						"column": 1
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer3"
@@ -715,11 +726,12 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 5
-						"colSpan": 5
+						"row": 6
+						"colSpan": 13
 						"fill": 2
 						"hSizePolicy": 1
 						"vSizePolicy": 6
+						"column": 1
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer4"
@@ -727,7 +739,7 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 4
+						"column": 13
 						"row": 4
 						"fill": 2
 						"hSizePolicy": 1
@@ -739,11 +751,19 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 3
+						"column": 12
 						"row": 4
 						"fill": 1
 						"hSizePolicy": 6
 						"vSizePolicy": 1
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer5"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 6
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "AdminIDSaveButton"
@@ -751,10 +771,28 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "AdminStuffSave", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
-						"row": 7
+						"row": 8
 						"fill": 1
 						"vSizePolicy": 0
 						"minimumSize": new java.awt.Dimension( 50, 20 )
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer8"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 8
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer9"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 3
+						"row": 8
 					} )
 					add( new FormComponent( "javax.swing.JCheckBox" ) {
 						name: "darkModeCheckBox"
@@ -763,20 +801,37 @@ new FormModel {
 						addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "darkModeCheckBoxStateChanged", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "darkMode", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 2
-						"row": 7
+						"column": 4
+						"row": 8
 						"anchor": 8
 						"vSizePolicy": 0
 						"minimumSize": new java.awt.Dimension( 120, 50 )
 						"preferredSize": new java.awt.Dimension( 120, 50 )
 						"maximumSize": new java.awt.Dimension( 120, 50 )
 					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "adminConfigDefault"
+						"text": "Restore Default Configs"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "adminConfigDefault", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 5
+						"row": 8
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer7"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 7
+						"row": 8
+					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "AdminIDSaveNotify"
-						"text": ""
+						"text": "#"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 3
-						"row": 7
+						"column": 1
+						"row": 9
 						"anchor": 8
 						"hSizePolicy": 0
 						"vSizePolicy": 0

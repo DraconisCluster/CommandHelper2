@@ -8,14 +8,16 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Properties;
 
 
 public class HelperCopy extends JPanel {
@@ -167,7 +169,7 @@ public class HelperCopy extends JPanel {
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(config);
             objectOut.close();
-            System.out.println("The Object  was succesfully written to a file");
+            //System.out.println("The Object  was succesfully written to a file");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -182,7 +184,7 @@ public class HelperCopy extends JPanel {
 
             Object obj = objectIn.readObject();
 
-            System.out.println("The Object has been read from the file");
+            //System.out.println("The Object has been read from the file");
             objectIn.close();
             return (HelperConfig) obj;
         } catch (Exception ex) {
@@ -193,28 +195,11 @@ public class HelperCopy extends JPanel {
 
 
 
-    public static void main(String[] args) throws UnsupportedLookAndFeelException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+    public static void main(String[] args) throws IOException {
 
         File configFile = new File("helperConfig.txt");
-        configFile.createNewFile();
-        String[] servers = {                    "!",
-                "DX",
-                "DXL",
-                "DX1",
-                "DX2",
-                "DX3",
-                "DX4",
-                "DX5",
-                "DX6",
-                "--",
-                "D",
-                "D1",
-                "D2",
-                "D3",
-                "D4",
-                "D5",
-                "--",
-                "##"};
+        if(configFile.createNewFile()) {
+        }
         config = readConfig();
 
 
@@ -308,9 +293,10 @@ public class HelperCopy extends JPanel {
     private void AdminStuffSave(ActionEvent e) {
         config.setAdminID(AdminID.getText());
         config.setDarkMode(darkModeCheckBox.isSelected());
-        String[] servers = serversTextArea.getText().split("\n\r, \n, \r");
+        String[] servers = serversTextArea.getText().split("\\r?\\n|\\r");
         config.setServers(servers);
         writeConfig(config);
+        AdminIDSaveNotify.setText("Settings saved, restart for dark mode to take effect.");
     }
 
     private void settingsLoadConfigs(ChangeEvent e) {
@@ -318,6 +304,24 @@ public class HelperCopy extends JPanel {
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
     }
+
+    private void ServerSelectPopupMenuWillBecomeVisible(PopupMenuEvent e) {
+        ServerSelect.setModel(new DefaultComboBoxModel<>(config.getServersArray()));
+    }
+
+    private void ServerSelect(ActionEvent e) {
+        // TODO add your code here
+    }
+
+    private void ServerSelectItemStateChanged(ItemEvent e) {
+        // TODO add your code here
+    }
+
+    private void adminConfigDefault(ActionEvent e) {
+        config.restoreDefaults();
+        writeConfig(config);
+    }
+    
 
 
 
@@ -351,7 +355,7 @@ public class HelperCopy extends JPanel {
         var hSpacer1 = new Spacer();
         PlayerName = new JTextField();
         var label1 = new JLabel();
-        ServerSelect = new JComboBox<>();
+        ServerSelect = new JComboBox();
         var label2 = new JLabel();
         clearPlayerButton = new JButton();
         var panel4 = new JPanel();
@@ -381,6 +385,9 @@ public class HelperCopy extends JPanel {
         var panel6 = new JPanel();
         AdminID = new JTextField();
         var label3 = new JLabel();
+        label5 = new JLabel();
+        var vSpacer10 = new Spacer();
+        label4 = new JLabel();
         scrollPane2 = new JScrollPane();
         serversTextArea = new JTextArea();
         var vSpacer1 = new Spacer();
@@ -388,8 +395,13 @@ public class HelperCopy extends JPanel {
         var vSpacer3 = new Spacer();
         var vSpacer4 = new Spacer();
         var hSpacer2 = new Spacer();
+        var vSpacer5 = new Spacer();
         AdminIDSaveButton = new JButton();
+        var vSpacer8 = new Spacer();
+        var vSpacer9 = new Spacer();
         darkModeCheckBox = new JCheckBox();
+        adminConfigDefault = new JButton();
+        var vSpacer7 = new Spacer();
         AdminIDSaveNotify = new JLabel();
 
         //======== this ========
@@ -399,12 +411,12 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .
-        EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing
-        . border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,
-        java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( )
-        { @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )
-        throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing
+        . border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ),
+        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () ))
+        throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -641,27 +653,19 @@ public class HelperCopy extends JPanel {
                 ServerSelect.setDoubleBuffered(true);
                 ServerSelect.setLightWeightPopupEnabled(true);
                 ServerSelect.setMaximumRowCount(20);
-                ServerSelect.setModel(new DefaultComboBoxModel<>(new String[] {
-                    "!",
-                    "DX",
-                    "DXL",
-                    "DX1",
-                    "DX2",
-                    "DX3",
-                    "DX4",
-                    "DX5",
-                    "DX6",
-                    "--",
-                    "D",
-                    "D1",
-                    "D2",
-                    "D3",
-                    "D4",
-                    "D5",
-                    "--",
-                    "##"
-                }));
                 ServerSelect.setToolTipText("Select a server to run the command on");
+                ServerSelect.addActionListener(e -> ServerSelect(e));
+                ServerSelect.addItemListener(e -> ServerSelectItemStateChanged(e));
+                ServerSelect.addPopupMenuListener(new PopupMenuListener() {
+                    @Override
+                    public void popupMenuCanceled(PopupMenuEvent e) {}
+                    @Override
+                    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
+                    @Override
+                    public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                        ServerSelectPopupMenuWillBecomeVisible(e);
+                    }
+                });
                 panel1.add(ServerSelect, new GridConstraints(0, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -938,19 +942,40 @@ public class HelperCopy extends JPanel {
 
             //======== panel6 ========
             {
-                panel6.setLayout(new GridLayoutManager(8, 6, new Insets(0, 0, 0, 0), -1, -1));
-                panel6.add(AdminID, new GridConstraints(2, 0, 1, 6,
+                panel6.setLayout(new GridLayoutManager(10, 15, new Insets(0, 0, 0, 0), -1, -1));
+                panel6.add(AdminID, new GridConstraints(2, 1, 1, 14,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
 
                 //---- label3 ----
-                label3.setText("Enter  your SteamID64 and click save (save does nothing  yet lmfao, you have to enter it every time)");
-                panel6.add(label3, new GridConstraints(0, 0, 2, 6,
+                label3.setText("Enter  your SteamID64 and click save.");
+                panel6.add(label3, new GridConstraints(0, 1, 2, 14,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
+                    null, null, null));
+
+                //---- label5 ----
+                label5.setText("Customize servers available in server select here");
+                panel6.add(label5, new GridConstraints(3, 1, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel6.add(vSpacer10, new GridConstraints(3, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+
+                //---- label4 ----
+                label4.setText("Unless using default configs, use the prefixes for the servers (x0 instead of DXL, x1 instead of DX1, etc.)");
+                panel6.add(label4, new GridConstraints(3, 4, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
 
                 //======== scrollPane2 ========
@@ -959,62 +984,92 @@ public class HelperCopy extends JPanel {
                     //---- serversTextArea ----
                     serversTextArea.setLineWrap(true);
                     serversTextArea.setWrapStyleWord(true);
+                    serversTextArea.setRows(8);
                     scrollPane2.setViewportView(serversTextArea);
                 }
-                panel6.add(scrollPane2, new GridConstraints(4, 1, 3, 2,
+                panel6.add(scrollPane2, new GridConstraints(4, 1, 4, 4,
                     GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
-                panel6.add(vSpacer1, new GridConstraints(5, 5, 2, 1,
+                panel6.add(vSpacer1, new GridConstraints(6, 14, 2, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer2, new GridConstraints(6, 0, 1, 5,
+                panel6.add(vSpacer2, new GridConstraints(7, 1, 1, 13,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer3, new GridConstraints(5, 0, 1, 5,
+                panel6.add(vSpacer3, new GridConstraints(6, 1, 1, 13,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer4, new GridConstraints(4, 4, 1, 1,
+                panel6.add(vSpacer4, new GridConstraints(4, 13, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(hSpacer2, new GridConstraints(4, 3, 1, 1,
+                panel6.add(hSpacer2, new GridConstraints(4, 12, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    null, null, null));
+                panel6.add(vSpacer5, new GridConstraints(6, 0, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
 
                 //---- AdminIDSaveButton ----
                 AdminIDSaveButton.setText("Save");
                 AdminIDSaveButton.addActionListener(e -> AdminStuffSave(e));
-                panel6.add(AdminIDSaveButton, new GridConstraints(7, 1, 1, 1,
+                panel6.add(AdminIDSaveButton, new GridConstraints(8, 1, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     new Dimension(50, 20), null, null));
+                panel6.add(vSpacer8, new GridConstraints(8, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+                panel6.add(vSpacer9, new GridConstraints(8, 3, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
 
                 //---- darkModeCheckBox ----
                 darkModeCheckBox.setSelected(false);
                 darkModeCheckBox.setText("Dark Mode");
                 darkModeCheckBox.addChangeListener(e -> darkModeCheckBoxStateChanged(e));
                 darkModeCheckBox.addActionListener(e -> darkMode(e));
-                panel6.add(darkModeCheckBox, new GridConstraints(7, 2, 1, 1,
+                panel6.add(darkModeCheckBox, new GridConstraints(8, 4, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     new Dimension(120, 50), new Dimension(120, 50), new Dimension(120, 50)));
 
+                //---- adminConfigDefault ----
+                adminConfigDefault.setText("Restore Default Configs");
+                adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
+                panel6.add(adminConfigDefault, new GridConstraints(8, 5, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel6.add(vSpacer7, new GridConstraints(8, 7, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+
                 //---- AdminIDSaveNotify ----
-                AdminIDSaveNotify.setText("");
-                panel6.add(AdminIDSaveNotify, new GridConstraints(7, 3, 1, 1,
+                AdminIDSaveNotify.setText("#");
+                panel6.add(AdminIDSaveNotify, new GridConstraints(9, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1046,7 +1101,7 @@ public class HelperCopy extends JPanel {
     private JButton adminModeButton;
     private JButton playerModeButton;
     private JTextField PlayerName;
-    private JComboBox<String> ServerSelect;
+    private JComboBox ServerSelect;
     private JButton clearPlayerButton;
     private JButton clearBackupButton;
     private JButton parseButton;
@@ -1069,10 +1124,13 @@ public class HelperCopy extends JPanel {
     private JButton tTime;
     private JLabel tCopiedToClipboard;
     private JTextField AdminID;
+    private JLabel label5;
+    private JLabel label4;
     private JScrollPane scrollPane2;
     private JTextArea serversTextArea;
     private JButton AdminIDSaveButton;
     private JCheckBox darkModeCheckBox;
+    private JButton adminConfigDefault;
     private JLabel AdminIDSaveNotify;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

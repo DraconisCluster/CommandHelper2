@@ -1,9 +1,11 @@
 package adams.im;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class HelperConfig implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 111;
 
     private String adminID;
@@ -34,13 +36,23 @@ public class HelperConfig implements Serializable {
 
     public String getServers() {
         StringBuilder returnString = new StringBuilder();
-        for(int i = 0; i < servers.length; i++){
-            returnString.append(servers[i]).append("\n");
+        for (String server : servers) {
+            returnString.append(server).append("\n");
         }
-        return returnString.toString();
+        String returnString2 = returnString.toString();
+        return returnString2.trim();
+    }
+    public String[] getServersArray() {
+        return servers;
     }
 
     public void setServers(String[] servers) {
         this.servers = servers;
+    }
+
+    public void restoreDefaults(){
+        this.adminID = "your steamID64";
+        this.darkMode = false;
+        this.servers = new String[]{"!", "DXL", "DX1", "DX2", "DX3", "DX4", "DX5", "DX6", "--", "D", "D1", "D2", "D3", "D4", "D5", "D6"};
     }
 }
