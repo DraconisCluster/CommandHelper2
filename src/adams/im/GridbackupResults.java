@@ -73,7 +73,7 @@ public class GridbackupResults extends JDialog {
                     server2 = server;
                     fromConsole = " true false";
                 }
-                CopyToClipboard(server2 + " gridbackup restore " + player + entityID[row] + 1 + fromConsole);
+                CopyToClipboard(server2 + " gridbackup restore " + player + entityID[row] + " " + 1 + fromConsole);
             }
         });
 

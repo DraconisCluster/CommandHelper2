@@ -25,7 +25,7 @@ new FormModel {
 					}
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 						"$columnCount": 1
-						"$rowCount": 4
+						"$rowCount": 5
 					} ) {
 						name: "panel2"
 						auxiliary() {
@@ -480,13 +480,157 @@ new FormModel {
 					"title": "Grid Backup"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
-					"$columnCount": 1
-					"$rowCount": 1
+					"$columnCount": 7
+					"$rowCount": 8
+					"hGap": 0
+					"vGap": 0
 				} ) {
 					name: "panel5"
 					auxiliary() {
 						"JavaCodeGenerator.variableLocal": true
 					}
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tScripter"
+						"text": "/t scripter"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tVote"
+						"text": "/t vote"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tVote", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tName"
+						"text": "/t name"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tName", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tSupply"
+						"text": "/t supply"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tSupply", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 6
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tFixship"
+						"text": "/t fixship"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tFixship", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tSDNN"
+						"text": "/t sdnn"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tSDNN", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tWikiEdit"
+						"text": "/t wikiedit"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWikiEdit", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tWiki"
+						"text": "/t wiki"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWiki", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 6
+						"row": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tCleanup"
+						"text": "/t cleanup"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tCleanup", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 3
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tLog"
+						"text": "/t log"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tLog", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 3
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tLoadCrash"
+						"text": "/t loadcrash"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tLoadCrash", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 3
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tConntrouble"
+						"text": "/t conntrouble"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tConntrouble", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 6
+						"row": 3
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tDIE"
+						"text": "/t die"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tDIE", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tWait"
+						"text": "/t wait"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWait", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 5
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tWait2"
+						"text": "/t wait2"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWait2", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 5
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "tTime"
+						"text": "/t time"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tTime", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 6
+						"row": 5
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "tCopiedToClipboard"
+						"text": "Clipboard Output"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 7
+						"colSpan": 7
+						"anchor": 8
+					} )
 				}, new FormLayoutConstraints( null ) {
 					"title": "xelA Tags"
 				} )
@@ -511,7 +655,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label3"
-						"text": "Enter  your SteamID64 and click save"
+						"text": "Enter  your SteamID64 and click save (save does nothing  yet lmfao, you have to enter it every time)"
 						auxiliary() {
 							"JavaCodeGenerator.variableLocal": true
 						}
@@ -588,7 +732,7 @@ new FormModel {
 						"text": "Save"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
-						"row": 3
+						"row": 7
 						"fill": 1
 						"vSizePolicy": 0
 						"minimumSize": new java.awt.Dimension( 50, 20 )
@@ -597,9 +741,11 @@ new FormModel {
 						name: "darkModeCheckBox"
 						"selected": false
 						"text": "Dark Mode"
+						addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "darkModeCheckBoxStateChanged", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "darkMode", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 2
-						"row": 3
+						"row": 7
 						"anchor": 8
 						"vSizePolicy": 0
 						"minimumSize": new java.awt.Dimension( 120, 50 )
@@ -611,7 +757,7 @@ new FormModel {
 						"text": ""
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 3
-						"row": 3
+						"row": 7
 						"anchor": 8
 						"hSizePolicy": 0
 						"vSizePolicy": 0
