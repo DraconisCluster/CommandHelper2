@@ -1,0 +1,630 @@
+JFDML JFormDesigner: "7.0.5.1.409" Java: "11.0.11" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"alignmentX": 0.1f
+			"focusTraversalPolicyProvider": true
+			"foreground": new java.awt.Color( 95, 100, 102, 255 )
+			"maximumSize": new java.awt.Dimension( 825, 280 )
+			"minimumSize": new java.awt.Dimension( 825, 280 )
+			"preferredSize": new java.awt.Dimension( 825, 280 )
+			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+				name: "tabbedPane1"
+				"enabled": true
+				"toolTipText": "Commands, might be useful for tickets or something"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 5
+					"$rowCount": 15
+				} ) {
+					name: "panel1"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+						"$columnCount": 1
+						"$rowCount": 4
+					} ) {
+						name: "panel2"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+						add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+							name: "toolBar1"
+							"floatable": false
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator1"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "gridbackupListButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Gridbackup List"
+								"toolTipText": "List gridbackups"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator2"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "hangarListButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Hangar List"
+								"toolTipText": "List hangar"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator3"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "ownedGridsListButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Owned Grids List"
+								"toolTipText": "List the grids a player has ownership of"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator4"
+								"inheritsPopupMenu": false
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "createdGridsListButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Created Grids List"
+								"toolTipText": "List the grids a player has created"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator5"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"fill": 1
+							"hSizePolicy": 6
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 50 )
+						} )
+						add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+							name: "toolBar2"
+							"floatable": false
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator6"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "scripterButton"
+								"contentAreaFilled": true
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Scripter"
+								"toolTipText": "Set scripter rank"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator7"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "transferGridButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Transfer Grid"
+								"toolTipText": "Run while looking at a grid to transfer to player"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator8"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "getSteamID64Button"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Get SteamID64"
+								"toolTipText": "Get player steamid"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator9"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "listPlayersButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "List Players"
+								"toolTipText": "Get a list of players on the server"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator10"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 1
+							"fill": 1
+							"hSizePolicy": 6
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 50 )
+						} )
+						add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+							name: "toolBar3"
+							"floatable": false
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator11"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "onlineServersButton"
+								"inheritsPopupMenu": false
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Online Servers"
+								"toolTipText": "See online servers"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator12"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "clusterUptimeButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Controller Uptime"
+								"toolTipText": "Get uptime of the Nexus controllers"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator13"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "checkBlocklimitsButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Check Blocklimits"
+								"toolTipText": "Check blocklimits of a player"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator14"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "updateBlocklimitsButton"
+								"maximumSize": new java.awt.Dimension( 125, 50 )
+								"minimumSize": new java.awt.Dimension( 125, 50 )
+								"preferredSize": new java.awt.Dimension( 125, 50 )
+								"text": "Update Blocklimits"
+								"toolTipText": "Update a players blocklimts"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator15"
+								auxiliary() {
+									"JavaCodeGenerator.variableLocal": true
+								}
+							} )
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 2
+							"fill": 1
+							"hSizePolicy": 6
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 50 )
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "ClipboardOutput"
+							"text": "Clipboard Output"
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 3
+							"anchor": 8
+							"hSizePolicy": 0
+							"vSizePolicy": 0
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 3
+						"row": 1
+						"colSpan": 2
+						"rowSpan": 14
+						"fill": 3
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+						"$columnCount": 1
+						"$rowCount": 4
+					} ) {
+						name: "panel3"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "clearAdminSettingsButton"
+							"text": "Clear Admin Settings"
+							"toolTipText": "YOU MUST RUN THIS AFTER LEAVING ADMIN MODE"
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 2
+							"fill": 1
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 60 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "adminModeButton"
+							"text": "Admin Mode"
+							"toolTipText": "Set admin rank"
+							"verifyInputWhenFocusTarget": true
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"fill": 1
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 60 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "playerModeButton"
+							"borderPainted": true
+							"text": "Player Mode"
+							"toolTipText": "Remove admin rank"
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 1
+							"fill": 1
+							"vSizePolicy": 0
+							"preferredSize": new java.awt.Dimension( -1, 60 )
+						} )
+						add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+							name: "hSpacer1"
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 3
+							"fill": 1
+							"hSizePolicy": 6
+							"vSizePolicy": 1
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 1
+						"colSpan": 3
+						"rowSpan": 14
+						"fill": 3
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "PlayerName"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 3
+						"anchor": 8
+						"fill": 1
+						"hSizePolicy": 6
+						"vSizePolicy": 0
+						"preferredSize": new java.awt.Dimension( 150, -1 )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label1"
+						"text": "Playername/SteamID64:   "
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"anchor": 8
+						"hSizePolicy": 0
+						"vSizePolicy": 0
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "ServerSelect"
+						"doubleBuffered": true
+						"lightWeightPopupEnabled": true
+						"maximumRowCount": 20
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "!"
+							addElement( "!" )
+							addElement( "DX" )
+							addElement( "DXL" )
+							addElement( "DX1" )
+							addElement( "DX2" )
+							addElement( "DX3" )
+							addElement( "DX4" )
+							addElement( "DX5" )
+							addElement( "DX6" )
+							addElement( "--" )
+							addElement( "D" )
+							addElement( "D1" )
+							addElement( "D2" )
+							addElement( "D3" )
+							addElement( "D4" )
+							addElement( "D5" )
+							addElement( "--" )
+							addElement( "##" )
+						}
+						"toolTipText": "Select a server to run the command on"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"anchor": 8
+						"fill": 1
+						"hSizePolicy": 2
+						"vSizePolicy": 0
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label2"
+						"text": "  Server:   "
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"anchor": 8
+						"hSizePolicy": 0
+						"vSizePolicy": 0
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "clearPlayerButton"
+						"text": "Clear"
+						"toolTipText": "Clear playername"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"fill": 1
+						"vSizePolicy": 0
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Commands"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 1
+					"$rowCount": 2
+				} ) {
+					name: "panel4"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+					add( new FormContainer( "javax.swing.JToolBar", new FormLayoutManager( class javax.swing.JToolBar ) ) {
+						name: "toolBar4"
+						"floatable": false
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+						add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+							name: "separator16"
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "clearBackupButton"
+							"maximumSize": new java.awt.Dimension( 78, 50 )
+							"minimumSize": new java.awt.Dimension( 78, 50 )
+							"preferredSize": new java.awt.Dimension( 78, 50 )
+							"text": "Clear"
+						} )
+						add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+							name: "separator17"
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "parseButton"
+							"maximumSize": new java.awt.Dimension( 78, 50 )
+							"minimumSize": new java.awt.Dimension( 78, 50 )
+							"preferredSize": new java.awt.Dimension( 78, 50 )
+							"text": "Parse"
+						} )
+						add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+							name: "separator18"
+							auxiliary() {
+								"JavaCodeGenerator.variableLocal": true
+							}
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 1
+						"fill": 1
+						"hSizePolicy": 6
+						"vSizePolicy": 0
+						"preferredSize": new java.awt.Dimension( -1, 50 )
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane1"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+						add( new FormComponent( "javax.swing.JTextArea" ) {
+							name: "gridBackupEntry"
+							"text": ""
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"fill": 3
+						"hSizePolicy": 7
+						"vSizePolicy": 7
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Grid Backup"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 1
+					"$rowCount": 1
+				} ) {
+					name: "panel5"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+				}, new FormLayoutConstraints( null ) {
+					"title": "xelA Tags"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 6
+					"$rowCount": 8
+				} ) {
+					name: "panel6"
+					auxiliary() {
+						"JavaCodeGenerator.variableLocal": true
+					}
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "AdminID"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 2
+						"colSpan": 6
+						"anchor": 8
+						"fill": 1
+						"hSizePolicy": 6
+						"vSizePolicy": 0
+						"preferredSize": new java.awt.Dimension( 150, -1 )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "Enter  your SteamID64 and click save"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"colSpan": 6
+						"rowSpan": 2
+						"anchor": 8
+						"hSizePolicy": 0
+						"vSizePolicy": 0
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer1"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 5
+						"row": 5
+						"rowSpan": 2
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer2"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 6
+						"colSpan": 5
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer3"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"colSpan": 5
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer4"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 4
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+						name: "hSpacer2"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 3
+						"row": 4
+						"fill": 1
+						"hSizePolicy": 6
+						"vSizePolicy": 1
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "AdminIDSaveButton"
+						"text": "Save"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"row": 3
+						"fill": 1
+						"vSizePolicy": 0
+						"minimumSize": new java.awt.Dimension( 50, 20 )
+					} )
+					add( new FormComponent( "javax.swing.JCheckBox" ) {
+						name: "darkModeCheckBox"
+						"selected": false
+						"text": "Dark Mode"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 3
+						"anchor": 8
+						"vSizePolicy": 0
+						"minimumSize": new java.awt.Dimension( 120, 50 )
+						"preferredSize": new java.awt.Dimension( 120, 50 )
+						"maximumSize": new java.awt.Dimension( 120, 50 )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "AdminIDSaveNotify"
+						"text": ""
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 3
+						"row": 3
+						"anchor": 8
+						"hSizePolicy": 0
+						"vSizePolicy": 0
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Settings"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 1196, 475 )
+		} )
+	}
+}
