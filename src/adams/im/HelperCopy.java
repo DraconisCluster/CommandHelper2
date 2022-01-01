@@ -153,7 +153,7 @@ public class HelperCopy extends JPanel {
             case "D6" -> "d6 ";
             case "##" -> "## ";
 
-            default -> ServerSelect.getSelectedItem().toString();
+            default -> (ServerSelect.getSelectedItem().toString() + " ");
         };
     }
 
@@ -208,7 +208,7 @@ public class HelperCopy extends JPanel {
         } else FlatIntelliJLaf.setup();
 
 
-        JFrame frame = new JFrame("Command Helper 2 v1.1.0");
+        JFrame frame = new JFrame("Command Helper 2 v1.2.1");
         frame.setContentPane(new HelperCopy().tabbedPane1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -299,7 +299,7 @@ public class HelperCopy extends JPanel {
         AdminIDSaveNotify.setText("Settings saved, restart for dark mode to take effect.");
     }
 
-    private void settingsLoadConfigs(ChangeEvent e) {
+    public void settingsLoadConfigs(ChangeEvent e) {
         AdminID.setText(config.getAdminID());
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
@@ -319,11 +319,12 @@ public class HelperCopy extends JPanel {
 
     private void adminConfigDefault(ActionEvent e) {
         config.restoreDefaults();
+        AdminID.setText(config.getAdminID());
+        serversTextArea.setText(config.getServers());
+        darkModeCheckBox.setSelected(config.isDarkMode());
+        AdminIDSaveNotify.setText("Restart to apply default configs");
         writeConfig(config);
     }
-    
-
-
 
 
     private void initComponents() {
@@ -355,7 +356,7 @@ public class HelperCopy extends JPanel {
         var hSpacer1 = new Spacer();
         PlayerName = new JTextField();
         var label1 = new JLabel();
-        ServerSelect = new JComboBox();
+        ServerSelect = new JComboBox<>();
         var label2 = new JLabel();
         clearPlayerButton = new JButton();
         var panel4 = new JPanel();
@@ -411,12 +412,13 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
-        EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax. swing
-        . border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ),
-        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
-        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () ))
-        throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border
+        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog"
+        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
+        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+        .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException
+        ( ); }} );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -579,7 +581,7 @@ public class HelperCopy extends JPanel {
                         null, null, null));
 
                     //---- ClipboardOutput ----
-                    ClipboardOutput.setText("Clipboard Output");
+                    ClipboardOutput.setText("#");
                     panel2.add(ClipboardOutput, new GridConstraints(3, 0, 1, 1,
                         GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                         GridConstraints.SIZEPOLICY_FIXED,
@@ -654,6 +656,9 @@ public class HelperCopy extends JPanel {
                 ServerSelect.setLightWeightPopupEnabled(true);
                 ServerSelect.setMaximumRowCount(20);
                 ServerSelect.setToolTipText("Select a server to run the command on");
+                ServerSelect.setModel(new DefaultComboBoxModel<>(new String[] {
+                    "!"
+                }));
                 ServerSelect.addActionListener(e -> ServerSelect(e));
                 ServerSelect.addItemListener(e -> ServerSelectItemStateChanged(e));
                 ServerSelect.addPopupMenuListener(new PopupMenuListener() {
@@ -931,7 +936,7 @@ public class HelperCopy extends JPanel {
                     null, null, null));
 
                 //---- tCopiedToClipboard ----
-                tCopiedToClipboard.setText("Clipboard Output");
+                tCopiedToClipboard.setText("#");
                 panel5.add(tCopiedToClipboard, new GridConstraints(7, 0, 1, 7,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1101,7 +1106,7 @@ public class HelperCopy extends JPanel {
     private JButton adminModeButton;
     private JButton playerModeButton;
     private JTextField PlayerName;
-    private JComboBox ServerSelect;
+    private JComboBox<String> ServerSelect;
     private JButton clearPlayerButton;
     private JButton clearBackupButton;
     private JButton parseButton;
