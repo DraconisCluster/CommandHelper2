@@ -80,13 +80,6 @@ new FormModel {
 								"text": "Owned Grids List"
 								"toolTipText": "List the grids a player has ownership of"
 							} )
-							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
-								name: "separator4"
-								"inheritsPopupMenu": false
-								auxiliary() {
-									"JavaCodeGenerator.variableLocal": true
-								}
-							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
 								name: "createdGridsListButton"
 								"maximumSize": new java.awt.Dimension( 125, 50 )
@@ -663,20 +656,11 @@ new FormModel {
 						"row": 3
 						"anchor": 8
 					} )
-					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer10"
-						auxiliary() {
-							"JavaCodeGenerator.variableLocal": true
-						}
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 2
-						"row": 3
-					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label4"
 						"text": "Unless using default configs, use the prefixes for the servers (x0 instead of DXL, x1 instead of DX1, etc.)"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 4
+						"column": 2
 						"row": 3
 						"anchor": 8
 					} )
@@ -687,6 +671,7 @@ new FormModel {
 							"lineWrap": true
 							"wrapStyleWord": true
 							"rows": 8
+							"columns": 1
 						} )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 1
@@ -696,7 +681,6 @@ new FormModel {
 						"anchor": 9
 						"hSizePolicy": 0
 						"vSizePolicy": 0
-						"colSpan": 4
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer1"
@@ -780,24 +764,6 @@ new FormModel {
 						"vSizePolicy": 0
 						"minimumSize": new java.awt.Dimension( 50, 20 )
 					} )
-					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer8"
-						auxiliary() {
-							"JavaCodeGenerator.variableLocal": true
-						}
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 2
-						"row": 8
-					} )
-					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer9"
-						auxiliary() {
-							"JavaCodeGenerator.variableLocal": true
-						}
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 3
-						"row": 8
-					} )
 					add( new FormComponent( "javax.swing.JCheckBox" ) {
 						name: "darkModeCheckBox"
 						"selected": false
@@ -805,7 +771,7 @@ new FormModel {
 						addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "darkModeCheckBoxStateChanged", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "darkMode", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 4
+						"column": 2
 						"row": 8
 						"anchor": 8
 						"vSizePolicy": 0
@@ -818,7 +784,7 @@ new FormModel {
 						"text": "Restore Default Configs"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "adminConfigDefault", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 5
+						"column": 3
 						"row": 8
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {

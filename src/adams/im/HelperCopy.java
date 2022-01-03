@@ -1,5 +1,6 @@
 package adams.im;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -162,7 +163,7 @@ public class HelperCopy extends JPanel {
         return '"' + player + '"';
     }
 
-    public void writeConfig(HelperConfig config) {
+    public static void writeConfig(HelperConfig config) {
 
         try {
             FileOutputStream fileOut = new FileOutputStream("helperConfig.txt");
@@ -198,10 +199,12 @@ public class HelperCopy extends JPanel {
     public static void main(String[] args) throws IOException {
 
         File configFile = new File("helperConfig.txt");
-        if(configFile.createNewFile()) {
+        if(!configFile.exists()) {
+            configFile.createNewFile();
+            config = new HelperConfig();
+            writeConfig(config);
         }
         config = readConfig();
-
 
         if(config.isDarkMode()) {
             FlatDarkLaf.setup();
@@ -213,9 +216,6 @@ public class HelperCopy extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        
-
-
     }
 
     private void darkModeCheckBoxStateChanged(ChangeEvent e) {
@@ -387,7 +387,6 @@ public class HelperCopy extends JPanel {
         AdminID = new JTextField();
         var label3 = new JLabel();
         label5 = new JLabel();
-        var vSpacer10 = new Spacer();
         label4 = new JLabel();
         scrollPane2 = new JScrollPane();
         serversTextArea = new JTextArea();
@@ -398,8 +397,6 @@ public class HelperCopy extends JPanel {
         var hSpacer2 = new Spacer();
         var vSpacer5 = new Spacer();
         AdminIDSaveButton = new JButton();
-        var vSpacer8 = new Spacer();
-        var vSpacer9 = new Spacer();
         darkModeCheckBox = new JCheckBox();
         adminConfigDefault = new JButton();
         var vSpacer7 = new Spacer();
@@ -412,13 +409,12 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border
-        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog"
-        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
-        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-        .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .getPropertyName () )) throw new RuntimeException
-        ( ); }} );
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
+        .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn" , javax. swing .border . TitledBorder. CENTER ,javax
+        . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,
+        12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans
+        .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062ord\u0065r" .equals ( e.
+        getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -465,9 +461,6 @@ public class HelperCopy extends JPanel {
                         ownedGridsListButton.setText("Owned Grids List");
                         ownedGridsListButton.setToolTipText("List the grids a player has ownership of");
                         toolBar1.add(ownedGridsListButton);
-
-                        //---- separator4 ----
-                        toolBar1.addSeparator();
 
                         //---- createdGridsListButton ----
                         createdGridsListButton.setMaximumSize(new Dimension(125, 50));
@@ -969,15 +962,10 @@ public class HelperCopy extends JPanel {
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel6.add(vSpacer10, new GridConstraints(3, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
 
                 //---- label4 ----
                 label4.setText("Unless using default configs, use the prefixes for the servers (x0 instead of DXL, x1 instead of DX1, etc.)");
-                panel6.add(label4, new GridConstraints(3, 4, 1, 1,
+                panel6.add(label4, new GridConstraints(3, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -990,9 +978,10 @@ public class HelperCopy extends JPanel {
                     serversTextArea.setLineWrap(true);
                     serversTextArea.setWrapStyleWord(true);
                     serversTextArea.setRows(8);
+                    serversTextArea.setColumns(1);
                     scrollPane2.setViewportView(serversTextArea);
                 }
-                panel6.add(scrollPane2, new GridConstraints(4, 1, 4, 4,
+                panel6.add(scrollPane2, new GridConstraints(4, 1, 4, 1,
                     GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1036,23 +1025,13 @@ public class HelperCopy extends JPanel {
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     new Dimension(50, 20), null, null));
-                panel6.add(vSpacer8, new GridConstraints(8, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-                panel6.add(vSpacer9, new GridConstraints(8, 3, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
 
                 //---- darkModeCheckBox ----
                 darkModeCheckBox.setSelected(false);
                 darkModeCheckBox.setText("Dark Mode");
                 darkModeCheckBox.addChangeListener(e -> darkModeCheckBoxStateChanged(e));
                 darkModeCheckBox.addActionListener(e -> darkMode(e));
-                panel6.add(darkModeCheckBox, new GridConstraints(8, 4, 1, 1,
+                panel6.add(darkModeCheckBox, new GridConstraints(8, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1061,7 +1040,7 @@ public class HelperCopy extends JPanel {
                 //---- adminConfigDefault ----
                 adminConfigDefault.setText("Restore Default Configs");
                 adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
-                panel6.add(adminConfigDefault, new GridConstraints(8, 5, 1, 1,
+                panel6.add(adminConfigDefault, new GridConstraints(8, 3, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,

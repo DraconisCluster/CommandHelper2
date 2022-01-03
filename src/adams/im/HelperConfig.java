@@ -18,6 +18,10 @@ public class HelperConfig implements Serializable {
         this.servers = servers;
     }
 
+    public HelperConfig() {
+        restoreDefaults();
+    }
+
     public String getAdminID() {
         return adminID;
     }
