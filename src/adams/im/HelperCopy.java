@@ -1,6 +1,5 @@
 package adams.im;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -64,11 +63,14 @@ public class HelperCopy extends JPanel {
             } else if (server.charAt(0) == 'd') {
                 server = "D";
                 CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
-            } else {
+            } else if (server.charAt(0) == 'R') {
+                server = "R";
+                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
+                } else
                 CopyToClipboard("DX" + " admin clearadminsettings " + AdminID.getText());
-            }
 
         });
+
         // nexus stuff
         onlineServersButton.addActionListener(e -> CopyToClipboard("/nexus onlineservers"));
         // more nexus stuff
@@ -211,7 +213,7 @@ public class HelperCopy extends JPanel {
         } else FlatIntelliJLaf.setup();
 
 
-        JFrame frame = new JFrame("Command Helper 2 v1.2.1");
+        JFrame frame = new JFrame("Command Helper 2 v1.2.2");
         frame.setContentPane(new HelperCopy().tabbedPane1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

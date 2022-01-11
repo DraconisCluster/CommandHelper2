@@ -57,6 +57,6 @@ public class HelperConfig implements Serializable {
     public void restoreDefaults(){
         this.adminID = "your steamID64";
         this.darkMode = false;
-        this.servers = new String[]{"!", "DXL", "DX1", "DX2", "DX3", "DX4", "DX5", "DX6", "--", "D", "D1", "D2", "D3", "D4", "D5", "D6"};
+        this.servers = new String[]{"!", "R", "R1", "R2", "R3", "R4", "R5", "--", "DXL", "DX1", "DX2", "DX3", "DX4", "DX5", "DX6", "--", "D", "D1", "D2", "D3", "D4", "D5", "D6"};
     }
 }
