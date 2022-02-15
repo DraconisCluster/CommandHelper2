@@ -213,7 +213,7 @@ public class HelperCopy extends JPanel {
         } else FlatIntelliJLaf.setup();
 
 
-        JFrame frame = new JFrame("Command Helper 2 v1.2.2");
+        JFrame frame = new JFrame("Command Helper 2 v1.2.3 - Now with Java 17 support");
         frame.setContentPane(new HelperCopy().tabbedPane1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
