@@ -1,9 +1,9 @@
 package adams.im;
 
-
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -30,6 +30,8 @@ public class GridbackupResults extends JDialog {
             entityID[i] = Grids.get(i).getEntityId();
             date[i] = Grids.get(i).getDate();
         }
+
+        // set column names for table
         String[] columnNames = {"Name", "EntityID", "Backup Time"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 
@@ -49,13 +51,19 @@ public class GridbackupResults extends JDialog {
             add(copySelected);
             add(inGame);
 
+            // make new table, and sort by date newest to oldest
             dataResultsTable = new JTable(model);
+            TableRowSorter<TableModel> sort = new TableRowSorter<TableModel>(dataResultsTable.getModel());
+            dataResultsTable.setRowSorter(sort);
+            java.util.List<RowSorter.SortKey> sortList = new ArrayList<>();
+            sortList.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+            sort.setSortKeys(sortList);
+
             add(new JScrollPane(dataResultsTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED),
                 BorderLayout.CENTER);
-
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            // setModalityType(ModalityType.APPLICATION_MODAL);
+            //setModalityType(ModalityType.APPLICATION_MODAL);;
             pack();
             setVisible(true);
 
@@ -73,14 +81,10 @@ public class GridbackupResults extends JDialog {
                     server2 = server;
                     fromConsole = " true false";
                 }
-                CopyToClipboard(server2 + " gridbackup restore " + player + entityID[row] + " " + 1 + fromConsole);
+                CopyToClipboard(server2 + " gridbackup restore " + player + " " + entityID[row] + " " + 1 + fromConsole);
             }
         });
-
     }
-
-
-
     public void CopyToClipboard(String command) {
         Toolkit tk = Toolkit.getDefaultToolkit();
         if (command.charAt(0) == '!') {
@@ -91,8 +95,6 @@ public class GridbackupResults extends JDialog {
         clipboard1.setContents(outputString, null);
         ClipboardOutput.setText("Copied " + command + " to clipboard.");
     }
-
 }
-
 
 

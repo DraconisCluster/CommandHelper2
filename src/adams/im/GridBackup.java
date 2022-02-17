@@ -1,11 +1,14 @@
 package adams.im;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class GridBackup {
     private String gridName;
     private long entityId;
-    private String date;
+    private Date date;
 
-    public GridBackup(String gridName, long entityId, String date) {
+    public GridBackup(String gridName, long entityId, Date date) {
         this.gridName = gridName;
         this. entityId = entityId;
         this.date = date;
@@ -20,7 +23,9 @@ public class GridBackup {
     }
 
     public String getDate() {
-        return date;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+        format.applyPattern("yyyy-MM-dd kk:mm:ss");
+        return format.format(date);
     }
 
     public void setGridName(String gridName) {
@@ -31,7 +36,7 @@ public class GridBackup {
         this.entityId = entityId;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
