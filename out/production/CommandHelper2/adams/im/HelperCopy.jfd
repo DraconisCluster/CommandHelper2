@@ -615,8 +615,8 @@ new FormModel {
 					"title": "xelA Tags"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
-					"$columnCount": 15
-					"$rowCount": 10
+					"$columnCount": 35
+					"$rowCount": 11
 				} ) {
 					name: "panel6"
 					auxiliary() {
@@ -626,7 +626,7 @@ new FormModel {
 						name: "AdminID"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 2
-						"colSpan": 14
+						"colSpan": 34
 						"anchor": 8
 						"fill": 1
 						"hSizePolicy": 6
@@ -641,7 +641,7 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"colSpan": 14
+						"colSpan": 34
 						"rowSpan": 2
 						"anchor": 8
 						"hSizePolicy": 0
@@ -688,7 +688,7 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 14
+						"column": 34
 						"row": 6
 						"rowSpan": 2
 						"fill": 2
@@ -696,38 +696,12 @@ new FormModel {
 						"vSizePolicy": 6
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer2"
-						auxiliary() {
-							"JavaCodeGenerator.variableLocal": true
-						}
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 7
-						"colSpan": 13
-						"fill": 2
-						"hSizePolicy": 1
-						"vSizePolicy": 6
-						"column": 1
-					} )
-					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer3"
-						auxiliary() {
-							"JavaCodeGenerator.variableLocal": true
-						}
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 6
-						"colSpan": 13
-						"fill": 2
-						"hSizePolicy": 1
-						"vSizePolicy": 6
-						"column": 1
-					} )
-					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer4"
 						auxiliary() {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 13
+						"column": 33
 						"row": 4
 						"fill": 2
 						"hSizePolicy": 1
@@ -739,7 +713,7 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 12
+						"column": 32
 						"row": 4
 						"fill": 1
 						"hSizePolicy": 6
@@ -752,6 +726,15 @@ new FormModel {
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 6
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "adminConfigDefault"
+						"text": "Restore Default Configs"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "adminConfigDefault", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 7
+						"anchor": 8
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "AdminIDSaveButton"
@@ -779,22 +762,49 @@ new FormModel {
 						"preferredSize": new java.awt.Dimension( 120, 50 )
 						"maximumSize": new java.awt.Dimension( 120, 50 )
 					} )
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "adminConfigDefault"
-						"text": "Restore Default Configs"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "adminConfigDefault", true ) )
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 3
-						"row": 8
-					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
-						name: "vSpacer7"
+						name: "vSpacer3"
 						auxiliary() {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 7
 						"row": 8
+						"colSpan": 29
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+						"column": 6
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer8"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 15
+						"row": 8
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer6"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 16
+						"row": 8
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer2"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 8
+						"colSpan": 13
+						"fill": 2
+						"hSizePolicy": 1
+						"vSizePolicy": 6
+						"column": 18
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "AdminIDSaveNotify"
@@ -805,6 +815,15 @@ new FormModel {
 						"anchor": 8
 						"hSizePolicy": 0
 						"vSizePolicy": 0
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer9"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 10
 					} )
 				}, new FormLayoutConstraints( null ) {
 					"title": "Settings"
@@ -818,3 +837,4 @@ new FormModel {
 		} )
 	}
 }
+
