@@ -70,8 +70,9 @@ public class GridbackupResults extends JDialog {
             copySelected.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = 0;
-                row = dataResultsTable.getSelectedRow();
+                int row = dataResultsTable.convertRowIndexToModel(dataResultsTable.getSelectedRow());
+
+                //ClipboardOutput.setText("Row " + row + " selected");
 
                 String server2 = "";
                 String fromConsole = "";
@@ -81,7 +82,7 @@ public class GridbackupResults extends JDialog {
                     server2 = server;
                     fromConsole = " true false";
                 }
-                CopyToClipboard(server2 + " gridbackup restore " + player + " " + entityID[row] + " " + 1 + fromConsole);
+                CopyToClipboard(server2 + "gridbackup restore " + player + " " + entityID[row] + " " + 1 + fromConsole);
             }
         });
     }
