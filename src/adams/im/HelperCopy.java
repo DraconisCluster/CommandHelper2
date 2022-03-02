@@ -13,20 +13,26 @@ import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
+import java.awt.event.*;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Scanner;
 
 
 public class HelperCopy extends JPanel {
 
     JWindow window = new JWindow();
     static HelperConfig config;
+    static HelperLogger logger = new HelperLogger(false);
 
     public HelperCopy() {
         // Gridbackup
@@ -44,6 +50,7 @@ public class HelperCopy extends JPanel {
                 gridbackupParse();
             } catch (ParseException ex) {
                 ex.printStackTrace();
+                logger.log(ex.toString());
             }
         });
         // clear gridbackup entry
@@ -133,7 +140,8 @@ public class HelperCopy extends JPanel {
 
             Grids.add(grid);
         }
-        JDialog results = new GridbackupResults(Grids, checkServer(), checkPlayer());
+        JDialog results = new GridbackupResults(Grids, checkServer(), checkPlayer(), logger);
+        logger.log("Gridbackup parsing successful");
         results.setVisible(true);
     }
 
@@ -148,6 +156,7 @@ public class HelperCopy extends JPanel {
         clipboard1.setContents(outputString, null);
         ClipboardOutput.setText("Copied " + command + " to clipboard.");
         tCopiedToClipboard.setText("Copied " + command + " to clipboard.");
+        logger.log("Successfully copied " + command + " to clipboard");
     }
 
     public String checkServer() {
@@ -187,9 +196,10 @@ public class HelperCopy extends JPanel {
             objectOut.writeObject(config);
             objectOut.close();
             //System.out.println("The Object  was succesfully written to a file");
-
+            logger.log("Config successfully written to file");
         } catch (Exception ex) {
             ex.printStackTrace();
+            logger.log(ex.toString());
         }
     }
 
@@ -209,8 +219,95 @@ public class HelperCopy extends JPanel {
             return null;
         }
     }
+    private static boolean checkUpdates(int major, int minor, int rev){
+        int thisMajor = major;
+        int thisMinor = minor;
+        int thisRev = rev;
+        URL url = null;
+        try {
+            url = new URL("https://api.github.com/repos/realadamsben/CommandHelper2/releases");
+        } catch (MalformedURLException e) {
+            logger.log(e.toString());
+        }
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        String git = null;
+        try {
+            git = in.readLine();
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        int latestTag = git.indexOf("\"tag_name\":\"");
+        String latestRelease = git.substring(latestTag+13, latestTag+18);
+
+        int remoteMajor = Integer.parseInt(latestRelease.substring(0,1));
+        int remoteMinor = Integer.parseInt(latestRelease.substring(2,3));
+        int remoteRev = Integer.parseInt(latestRelease.substring(4,5));
+        // check if actual updates are needed
+
+        int thisVersion = (thisMajor * 100) + (thisMinor * 10) + thisRev;
+        int remoteVersion = (remoteMajor * 100) + (remoteMinor * 10) + remoteRev;
+
+        if(remoteVersion > thisVersion){
+            return true;
+        } else {
+            return false;
+        }
+
+
+    }
+
+    private static void doUpdate(int major, int minor, int rev){
+        URL url = null;
+        try {
+            url = new URL("https://api.github.com/repos/realadamsben/CommandHelper2/releases");
+        } catch (MalformedURLException e) {
+            logger.log(e.toString());
+        }
+        BufferedReader in = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        String git = null;
+        try {
+            git = in.readLine();
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        int updatePosition = git.indexOf("\"browser_download_url\":");
+        String urlString = git.substring(updatePosition+24);
+        String updateURL = urlString.substring(0, urlString.indexOf('"'));
+        logger.log(updateURL);
+
+        String exeName = "Command Helper 2 v" + major + "." + minor + "." + rev;
+
+        InputStream dl = null;
+        try {
+            dl = new URL(updateURL).openStream();
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        try {
+            Files.copy(dl, Paths.get("Command_Helper_2_.exe"), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+    }
+
 
     public static void main(String[] args) throws IOException {
+
+        // release information
+        int major = 1;
+        int minor = 3;
+        int rev = 0;
+        String message = "Now with auto updating";
 
         File configFile = new File("helperConfig.txt");
 
@@ -218,20 +315,47 @@ public class HelperCopy extends JPanel {
             configFile.createNewFile();
             config = new HelperConfig();
             writeConfig(config);
+            logger.log("Config file does not exist, creating new config file");
+        } else {
+            logger.log("Config file exists, skipping new config creation");
         }
         config = readConfig();
+
+        logger.setEnabled(config.isDebugLogging());
 
 
         if(config.isDarkMode()) {
             FlatDarkLaf.setup();
-        } else FlatIntelliJLaf.setup();
+            logger.log("Started with Dark Mode");
+        } else{
+            FlatIntelliJLaf.setup();
+            logger.log("Started with Light Mode");
+        }
 
 
-        JFrame frame = new JFrame("Command Helper 2 v1.2.5 - Now with gridbackup shit that actually works this time I promise");
+        JFrame frame = new JFrame("Command Helper 2 v" + major + "." + minor + "." + rev + " - " + message);
         frame.setContentPane(new HelperCopy().tabbedPane1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        boolean update = checkUpdates(major, minor, rev);
+        if(update){
+            JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
+            Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+            System.exit(0);
+        }
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                logger.save();
+                System.exit(0);
+            }
+        });
+
+
     }
 
     private void darkModeCheckBoxStateChanged(ChangeEvent e) {
@@ -311,14 +435,18 @@ public class HelperCopy extends JPanel {
         config.setDarkMode(darkModeCheckBox.isSelected());
         String[] servers = serversTextArea.getText().split("\\r?\\n|\\r");
         config.setServers(servers);
+        config.setDebugLogging(checkBox1.isSelected());
         writeConfig(config);
         AdminIDSaveNotify.setText("Settings saved, restart for dark mode to take effect.");
+        logger.log("Configuration saved");
     }
 
     public void settingsLoadConfigs(ChangeEvent e) {
         AdminID.setText(config.getAdminID());
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
+        checkBox1.setSelected(config.isDebugLogging());
+        logger.log("Admin settings set from config");
     }
 
     private void ServerSelectPopupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -338,8 +466,67 @@ public class HelperCopy extends JPanel {
         AdminID.setText(config.getAdminID());
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
+        checkBox1.setSelected(config.isDebugLogging());
         AdminIDSaveNotify.setText("Restart to apply default configs");
+        logger.log("Configs restored to default");
         writeConfig(config);
+    }
+
+    private void checkBox1StateChanged(ChangeEvent e) {
+        config.setDebugLogging(checkBox1.isSelected());
+    }
+
+    private void GPSParse(ActionEvent e) {
+        Scanner in = null;
+        if(GPSInput.getText().charAt(0) != '<'){
+            File GPSInFile = new File(GPSInput.getText());
+            logger.log("GPS Converter using file");
+            try {
+                in = new Scanner(GPSInFile);
+                logger.log("File found successfully");
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                logger.log(ex.toString());
+            }
+        } else {
+            in = new Scanner(GPSInput.getText());
+            logger.log("GPS Converter using text box");
+        }
+        ArrayList<HelperGPS> gpsArray = new ArrayList<>();
+        int i = 0;
+        while(in.hasNextLine()) {
+            i++;
+            String currentLine = in.nextLine();
+            String[] gpsSplit = currentLine.split("<Position x=|y=|z=|/|>|\n");
+            System.out.println(Arrays.toString(gpsSplit));
+            gpsArray.add(new HelperGPS(GPSName.getText() + i, gpsSplit[1].substring(1, gpsSplit[1].length()-1), gpsSplit[2].substring(1, gpsSplit[2].length()-1), gpsSplit[3].substring(1, gpsSplit[3].length()-1), GPSColor.getText()));
+        }
+        StringBuilder s = new StringBuilder();
+        for(int j = 0; j < gpsArray.size(); j++){
+            s.append(gpsArray.get(j).toString() + "\n");
+        }
+        GPSOutput.setText(s.toString());
+        logger.log("GPS Conversion complete");
+        logger.log(gpsArray.toString());
+    }
+
+    private void SteamLinkParse(ActionEvent e) {
+        Scanner in = null;
+        in = new Scanner(SteamLinkIn.getText());
+        ArrayList<HelperSteamLink> linkArray = new ArrayList<>();
+        while(in.hasNextLine()){
+            String currentLine = in.nextLine();
+            int dash = currentLine.indexOf('-');
+            String modID = currentLine.substring(0, dash);
+            linkArray.add(new HelperSteamLink(modID));
+        }
+        StringBuilder s = new StringBuilder();
+        for(int j = 0; j < linkArray.size(); j++){
+            s.append(linkArray.get(j).toString() + "\n");
+        }
+        SteamLinkOut.setText(s.toString());
+        logger.log("Steamlink conversion complete");
+        logger.log(linkArray.toString());
     }
 
 
@@ -410,6 +597,7 @@ public class HelperCopy extends JPanel {
         var vSpacer4 = new Spacer();
         var hSpacer2 = new Spacer();
         var vSpacer5 = new Spacer();
+        checkBox1 = new JCheckBox();
         adminConfigDefault = new JButton();
         AdminIDSaveButton = new JButton();
         darkModeCheckBox = new JCheckBox();
@@ -419,6 +607,30 @@ public class HelperCopy extends JPanel {
         var vSpacer2 = new Spacer();
         AdminIDSaveNotify = new JLabel();
         var vSpacer9 = new Spacer();
+        panel7 = new JPanel();
+        label6 = new JLabel();
+        scrollPane3 = new JScrollPane();
+        GPSInput = new JTextPane();
+        var vSpacer10 = new Spacer();
+        var hSpacer3 = new Spacer();
+        label7 = new JLabel();
+        scrollPane4 = new JScrollPane();
+        GPSOutput = new JTextPane();
+        var vSpacer7 = new Spacer();
+        GPSParseButton = new JButton();
+        GPSName = new JTextField();
+        GPSColor = new JTextField();
+        panel8 = new JPanel();
+        label8 = new JLabel();
+        scrollPane5 = new JScrollPane();
+        SteamLinkIn = new JTextPane();
+        var vSpacer11 = new Spacer();
+        var hSpacer4 = new Spacer();
+        label9 = new JLabel();
+        scrollPane6 = new JScrollPane();
+        SteamLinkOut = new JTextPane();
+        var vSpacer12 = new Spacer();
+        SteamLinkParse = new JButton();
 
         //======== this ========
         setAlignmentX(0.1F);
@@ -427,11 +639,13 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
-        0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
-        . BOTTOM, new java. awt .Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
-        red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
-        beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
+        .swing.border.EmptyBorder(0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing
+        .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
+        Font("D\u0069al\u006fg",java.awt.Font.BOLD,12),java.awt.Color.red
+        ), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
+        public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062or\u0064er".equals(e.getPropertyName(
+        )))throw new RuntimeException();}});
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -442,7 +656,7 @@ public class HelperCopy extends JPanel {
 
             //======== panel1 ========
             {
-                panel1.setLayout(new GridLayoutManager(15, 5, new Insets(0, 0, 0, 0), -1, -1));
+                panel1.setLayout(new GridLayoutManager(15, 5, new Insets(10, 10, 10, 10), -1, -1));
 
                 //======== panel2 ========
                 {
@@ -478,6 +692,7 @@ public class HelperCopy extends JPanel {
                         ownedGridsListButton.setText("Owned Grids List");
                         ownedGridsListButton.setToolTipText("List the grids a player has ownership of");
                         toolBar1.add(ownedGridsListButton);
+                        toolBar1.addSeparator();
 
                         //---- createdGridsListButton ----
                         createdGridsListButton.setMaximumSize(new Dimension(125, 50));
@@ -612,7 +827,7 @@ public class HelperCopy extends JPanel {
                     clearAdminSettingsButton.setText("Clear Admin Settings");
                     clearAdminSettingsButton.setToolTipText("YOU MUST RUN THIS AFTER LEAVING ADMIN MODE");
                     panel3.add(clearAdminSettingsButton, new GridConstraints(2, 0, 1, 1,
-                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED,
                         null, null, null));
@@ -622,7 +837,7 @@ public class HelperCopy extends JPanel {
                     adminModeButton.setToolTipText("Set admin rank");
                     adminModeButton.setVerifyInputWhenFocusTarget(true);
                     panel3.add(adminModeButton, new GridConstraints(0, 0, 1, 1,
-                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED,
                         null, null, null));
@@ -632,7 +847,7 @@ public class HelperCopy extends JPanel {
                     playerModeButton.setText("Player Mode");
                     playerModeButton.setToolTipText("Remove admin rank");
                     panel3.add(playerModeButton, new GridConstraints(1, 0, 1, 1,
-                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_FIXED,
                         null, null, null));
@@ -708,7 +923,7 @@ public class HelperCopy extends JPanel {
 
             //======== panel4 ========
             {
-                panel4.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+                panel4.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
 
                 //======== toolBar4 ========
                 {
@@ -754,13 +969,13 @@ public class HelperCopy extends JPanel {
 
             //======== panel5 ========
             {
-                panel5.setLayout(new GridLayoutManager(8, 7, new Insets(0, 0, 0, 0), 0, 0));
+                panel5.setLayout(new GridLayoutManager(8, 7, new Insets(10, 10, 10, 10), 0, 0));
 
                 //---- tScripter ----
                 tScripter.setText("/t scripter");
                 tScripter.addActionListener(e -> tScripter(e));
                 panel5.add(tScripter, new GridConstraints(0, 0, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -772,7 +987,7 @@ public class HelperCopy extends JPanel {
 			tVote(e);
 		});
                 panel5.add(tVote, new GridConstraints(0, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -784,7 +999,7 @@ public class HelperCopy extends JPanel {
 			tName(e);
 		});
                 panel5.add(tName, new GridConstraints(0, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -796,7 +1011,7 @@ public class HelperCopy extends JPanel {
 			tSupply(e);
 		});
                 panel5.add(tSupply, new GridConstraints(0, 6, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -807,8 +1022,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tFixship(e);
 		});
-                panel5.add(tFixship, new GridConstraints(1, 0, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tFixship, new GridConstraints(2, 0, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -819,8 +1034,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tSDNN(e);
 		});
-                panel5.add(tSDNN, new GridConstraints(1, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tSDNN, new GridConstraints(2, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -831,8 +1046,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWikiEdit(e);
 		});
-                panel5.add(tWikiEdit, new GridConstraints(1, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tWikiEdit, new GridConstraints(2, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -843,8 +1058,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWiki(e);
 		});
-                panel5.add(tWiki, new GridConstraints(1, 6, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tWiki, new GridConstraints(2, 6, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -855,8 +1070,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tCleanup(e);
 		});
-                panel5.add(tCleanup, new GridConstraints(3, 0, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tCleanup, new GridConstraints(4, 0, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -867,8 +1082,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tLog(e);
 		});
-                panel5.add(tLog, new GridConstraints(3, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tLog, new GridConstraints(4, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -879,8 +1094,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tLoadCrash(e);
 		});
-                panel5.add(tLoadCrash, new GridConstraints(3, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tLoadCrash, new GridConstraints(4, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -891,8 +1106,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tConntrouble(e);
 		});
-                panel5.add(tConntrouble, new GridConstraints(3, 6, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tConntrouble, new GridConstraints(4, 6, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -903,8 +1118,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tDIE(e);
 		});
-                panel5.add(tDIE, new GridConstraints(5, 0, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tDIE, new GridConstraints(6, 0, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -915,8 +1130,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWait(e);
 		});
-                panel5.add(tWait, new GridConstraints(5, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tWait, new GridConstraints(6, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -927,8 +1142,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWait2(e);
 		});
-                panel5.add(tWait2, new GridConstraints(5, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tWait2, new GridConstraints(6, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -939,8 +1154,8 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tTime(e);
 		});
-                panel5.add(tTime, new GridConstraints(5, 6, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                panel5.add(tTime, new GridConstraints(6, 6, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
@@ -957,7 +1172,7 @@ public class HelperCopy extends JPanel {
 
             //======== panel6 ========
             {
-                panel6.setLayout(new GridLayoutManager(11, 35, new Insets(0, 0, 0, 0), -1, -1));
+                panel6.setLayout(new GridLayoutManager(11, 35, new Insets(10, 10, 10, 10), -1, -1));
                 panel6.add(AdminID, new GridConstraints(2, 1, 1, 34,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1024,6 +1239,15 @@ public class HelperCopy extends JPanel {
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
 
+                //---- checkBox1 ----
+                checkBox1.setText("Debug Logging");
+                checkBox1.addChangeListener(e -> checkBox1StateChanged(e));
+                panel6.add(checkBox1, new GridConstraints(6, 2, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
                 //---- adminConfigDefault ----
                 adminConfigDefault.setText("Restore Default Configs");
                 adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
@@ -1087,6 +1311,159 @@ public class HelperCopy extends JPanel {
                     null, null, null));
             }
             tabbedPane1.addTab("Settings", panel6);
+
+            //======== panel7 ========
+            {
+                panel7.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
+
+                //---- label6 ----
+                label6.setText("Enter positions from sandbox or a filepath");
+                panel7.add(label6, new GridConstraints(0, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //======== scrollPane3 ========
+                {
+                    scrollPane3.setViewportView(GPSInput);
+                }
+                panel7.add(scrollPane3, new GridConstraints(1, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel7.add(vSpacer10, new GridConstraints(1, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+                panel7.add(hSpacer3, new GridConstraints(2, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    null, null, null));
+
+                //---- label7 ----
+                label7.setText("GPSs will come out here");
+                panel7.add(label7, new GridConstraints(3, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //======== scrollPane4 ========
+                {
+                    scrollPane4.setViewportView(GPSOutput);
+                }
+                panel7.add(scrollPane4, new GridConstraints(4, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel7.add(vSpacer7, new GridConstraints(4, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+
+                //---- GPSParseButton ----
+                GPSParseButton.setText("Convert to GPS");
+                GPSParseButton.addActionListener(e -> GPSParse(e));
+                panel7.add(GPSParseButton, new GridConstraints(5, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //---- GPSName ----
+                GPSName.setText("Station #");
+                GPSName.setToolTipText("GPS Name");
+                panel7.add(GPSName, new GridConstraints(5, 1, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //---- GPSColor ----
+                GPSColor.setText("FF75C9F1");
+                GPSColor.setToolTipText("GPS Color");
+                panel7.add(GPSColor, new GridConstraints(5, 2, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+            }
+            tabbedPane1.addTab("GPS Conversion", panel7);
+
+            //======== panel8 ========
+            {
+                panel8.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
+
+                //---- label8 ----
+                label8.setText("Paste bulk edit list");
+                panel8.add(label8, new GridConstraints(0, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //======== scrollPane5 ========
+                {
+                    scrollPane5.setViewportView(SteamLinkIn);
+                }
+                panel8.add(scrollPane5, new GridConstraints(1, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel8.add(vSpacer11, new GridConstraints(1, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+                panel8.add(hSpacer4, new GridConstraints(2, 0, 1, 3,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    null, null, null));
+
+                //---- label9 ----
+                label9.setText("Steam links come out here");
+                panel8.add(label9, new GridConstraints(3, 0, 1, 3,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //======== scrollPane6 ========
+                {
+                    scrollPane6.setViewportView(SteamLinkOut);
+                }
+                panel8.add(scrollPane6, new GridConstraints(4, 0, 1, 4,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                panel8.add(vSpacer12, new GridConstraints(4, 4, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+
+                //---- SteamLinkParse ----
+                SteamLinkParse.setText("Convert to Steam Links");
+                SteamLinkParse.addActionListener(e -> {
+			GPSParse(e);
+			SteamLinkParse(e);
+		});
+                panel8.add(SteamLinkParse, new GridConstraints(5, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+            }
+            tabbedPane1.addTab("Bulk Edit Conversion", panel8);
         }
         add(tabbedPane1, BorderLayout.CENTER);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -1139,9 +1516,28 @@ public class HelperCopy extends JPanel {
     private JLabel label4;
     private JScrollPane scrollPane2;
     private JTextArea serversTextArea;
+    private JCheckBox checkBox1;
     private JButton adminConfigDefault;
     private JButton AdminIDSaveButton;
     private JCheckBox darkModeCheckBox;
     private JLabel AdminIDSaveNotify;
+    private JPanel panel7;
+    private JLabel label6;
+    private JScrollPane scrollPane3;
+    private JTextPane GPSInput;
+    private JLabel label7;
+    private JScrollPane scrollPane4;
+    private JTextPane GPSOutput;
+    private JButton GPSParseButton;
+    private JTextField GPSName;
+    private JTextField GPSColor;
+    private JPanel panel8;
+    private JLabel label8;
+    private JScrollPane scrollPane5;
+    private JTextPane SteamLinkIn;
+    private JLabel label9;
+    private JScrollPane scrollPane6;
+    private JTextPane SteamLinkOut;
+    private JButton SteamLinkParse;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

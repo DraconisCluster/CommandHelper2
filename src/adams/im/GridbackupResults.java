@@ -18,8 +18,12 @@ public class GridbackupResults extends JDialog {
     private JCheckBox inGame = new JCheckBox("In Game");
     private JLabel ClipboardOutput = new JLabel();
 
+    private HelperLogger logger;
 
-    public GridbackupResults(ArrayList<GridBackup> Grids, String server, String player) {
+
+    public GridbackupResults(ArrayList<GridBackup> Grids, String server, String player, HelperLogger logger) {
+
+        this.logger = logger;
 
         String[] gridName = new String[Grids.size()];
         String[] entityID = new String[Grids.size()];
@@ -95,6 +99,7 @@ public class GridbackupResults extends JDialog {
         StringSelection outputString = new StringSelection(command);
         clipboard1.setContents(outputString, null);
         ClipboardOutput.setText("Copied " + command + " to clipboard.");
+        logger.log("Successfully copied " + command + " to clipboard.");
     }
 }
 

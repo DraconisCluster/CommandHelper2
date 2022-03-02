@@ -19,6 +19,7 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 					"$columnCount": 5
 					"$rowCount": 15
+					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
 					name: "panel1"
 					auxiliary() {
@@ -79,6 +80,9 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Owned Grids List"
 								"toolTipText": "List the grids a player has ownership of"
+							} )
+							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
+								name: "separator4"
 							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
 								name: "createdGridsListButton"
@@ -282,7 +286,7 @@ new FormModel {
 							"toolTipText": "YOU MUST RUN THIS AFTER LEAVING ADMIN MODE"
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"row": 2
-							"fill": 1
+							"fill": 3
 							"vSizePolicy": 0
 							"preferredSize": new java.awt.Dimension( -1, 60 )
 						} )
@@ -292,7 +296,7 @@ new FormModel {
 							"toolTipText": "Set admin rank"
 							"verifyInputWhenFocusTarget": true
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-							"fill": 1
+							"fill": 3
 							"vSizePolicy": 0
 							"preferredSize": new java.awt.Dimension( -1, 60 )
 						} )
@@ -303,7 +307,7 @@ new FormModel {
 							"toolTipText": "Remove admin rank"
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"row": 1
-							"fill": 1
+							"fill": 3
 							"vSizePolicy": 0
 							"preferredSize": new java.awt.Dimension( -1, 60 )
 						} )
@@ -392,6 +396,7 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 					"$columnCount": 1
 					"$rowCount": 2
+					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
 					name: "panel4"
 					auxiliary() {
@@ -464,6 +469,7 @@ new FormModel {
 					"$rowCount": 8
 					"hGap": 0
 					"vGap": 0
+					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
 					name: "panel5"
 					auxiliary() {
@@ -473,7 +479,9 @@ new FormModel {
 						name: "tScripter"
 						"text": "/t scripter"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
-					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"fill": 3
+					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tVote"
 						"text": "/t vote"
@@ -481,6 +489,7 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tVote", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 2
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tName"
@@ -489,6 +498,7 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tName", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 4
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tSupply"
@@ -497,6 +507,7 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tSupply", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 6
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tFixship"
@@ -504,7 +515,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tFixship", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 1
+						"row": 2
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tSDNN"
@@ -513,7 +525,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tSDNN", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 2
-						"row": 1
+						"row": 2
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tWikiEdit"
@@ -522,7 +535,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWikiEdit", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 4
-						"row": 1
+						"row": 2
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tWiki"
@@ -531,7 +545,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWiki", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 6
-						"row": 1
+						"row": 2
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tCleanup"
@@ -539,7 +554,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tCleanup", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 3
+						"row": 4
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tLog"
@@ -548,7 +564,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tLog", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 2
-						"row": 3
+						"row": 4
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tLoadCrash"
@@ -557,7 +574,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tLoadCrash", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 4
-						"row": 3
+						"row": 4
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tConntrouble"
@@ -566,7 +584,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tConntrouble", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 6
-						"row": 3
+						"row": 4
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tDIE"
@@ -574,7 +593,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tScripter", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tDIE", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"row": 5
+						"row": 6
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tWait"
@@ -583,7 +603,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWait", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 2
-						"row": 5
+						"row": 6
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tWait2"
@@ -592,7 +613,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tWait2", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 4
-						"row": 5
+						"row": 6
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "tTime"
@@ -601,7 +623,8 @@ new FormModel {
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "tTime", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 6
-						"row": 5
+						"row": 6
+						"fill": 3
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "tCopiedToClipboard"
@@ -617,6 +640,7 @@ new FormModel {
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 					"$columnCount": 35
 					"$rowCount": 11
+					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
 					name: "panel6"
 					auxiliary() {
@@ -727,6 +751,15 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 6
 					} )
+					add( new FormComponent( "javax.swing.JCheckBox" ) {
+						name: "checkBox1"
+						"text": "Debug Logging"
+						addEvent( new FormEvent( "javax.swing.event.ChangeListener", "stateChanged", "checkBox1StateChanged", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 6
+						"anchor": 8
+					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "adminConfigDefault"
 						"text": "Restore Default Configs"
@@ -827,6 +860,191 @@ new FormModel {
 					} )
 				}, new FormLayoutConstraints( null ) {
 					"title": "Settings"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 5
+					"$rowCount": 7
+					"hGap": 5
+					"margin": &Insets0 new java.awt.Insets( 10, 10, 10, 10 )
+				} ) {
+					name: "panel7"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label6"
+						"text": "Enter positions from sandbox or a filepath"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane3"
+						add( new FormComponent( "javax.swing.JTextPane" ) {
+							name: "GPSInput"
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 1
+						"fill": 3
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer10"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 1
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+						name: "hSpacer3"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 2
+						"column": 2
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label7"
+						"text": "GPSs will come out here"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 3
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane4"
+						add( new FormComponent( "javax.swing.JTextPane" ) {
+							name: "GPSOutput"
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 4
+						"anchor": 8
+						"fill": 3
+						"colSpan": 3
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer7"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 4
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "GPSParseButton"
+						"text": "Convert to GPS"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "GPSParse", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"anchor": 8
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "GPSName"
+						"text": "Station #"
+						"toolTipText": "GPS Name"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"row": 5
+						"anchor": 8
+						"fill": 2
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "GPSColor"
+						"text": "FF75C9F1"
+						"toolTipText": "GPS Color"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"anchor": 8
+						"fill": 2
+						"column": 2
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "GPS Conversion"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 5
+					"$rowCount": 7
+					"hGap": 5
+					"margin": #Insets0
+				} ) {
+					name: "panel8"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label8"
+						"text": "Paste bulk edit list"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane5"
+						add( new FormComponent( "javax.swing.JTextPane" ) {
+							name: "SteamLinkIn"
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 1
+						"fill": 3
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer11"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 1
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+						name: "hSpacer4"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 2
+						"colSpan": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label9"
+						"text": "Steam links come out here"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 3
+						"anchor": 8
+						"colSpan": 3
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane6"
+						add( new FormComponent( "javax.swing.JTextPane" ) {
+							name: "SteamLinkOut"
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 4
+						"anchor": 8
+						"fill": 3
+						"colSpan": 4
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer12"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 4
+						"row": 4
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "SteamLinkParse"
+						"text": "Convert to Steam Links"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "GPSParse", true ) )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "SteamLinkParse", true ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"anchor": 8
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Bulk Edit Conversion"
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"

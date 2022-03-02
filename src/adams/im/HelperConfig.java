@@ -11,6 +11,7 @@ public class HelperConfig implements Serializable {
     private String adminID;
     private boolean darkMode;
     private String[] servers;
+    private boolean debugLogging;
 
     public HelperConfig(String adminID, boolean darkMode, String[] servers){
         this.adminID = adminID;
@@ -54,10 +55,19 @@ public class HelperConfig implements Serializable {
         this.servers = servers;
     }
 
+    public void setDebugLogging(boolean debug){
+        this.debugLogging = debug;
+    }
+
+    public boolean isDebugLogging(){
+        return debugLogging;
+    }
+
     public void restoreDefaults(){
         this.adminID = "your steamID64";
         this.darkMode = false;
-        this.servers = new String[]{"!", "R", "R1", "R2", "R3", "R4", "R5", "--", "DXL", "DX1", "DX2", "DX3", "DX4", "DX5", "DX6", "--", "D", "D1", "D2", "D3", "D4", "D5", "D6"};
+        this.servers = new String[]{"!", "R", "R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8",  "--", "DXL", "DX1", "DX2", "DX3", "DX4", "DX5", "DX6", "--", "D", "D1", "D2", "D3", "D4", "D5", "D6"};
+        this.debugLogging = false;
     }
     public long getSerialVersionUID() {
         return serialVersionUID;

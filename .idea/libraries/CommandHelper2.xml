@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="CommandHelper2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/production/CommandHelper2/flatlaf-2.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/production/CommandHelper2/update4j-1.5.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/production/CommandHelper2/github-api-1.301.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/production/CommandHelper2/forms_rt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
