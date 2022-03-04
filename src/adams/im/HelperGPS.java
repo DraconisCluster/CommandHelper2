@@ -1,7 +1,5 @@
 package adams.im;
 
-import java.awt.*;
-
 public class HelperGPS {
 
     private String name;
@@ -16,6 +14,15 @@ public class HelperGPS {
         this.y = y.substring(0, y.length()-1);
         this.z = z.substring(0, z.length()-1);
         this.color = color;
+    }
+
+    public HelperGPS(String ownerName, String x, String y, String z){
+        this.name = ownerName;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.color = "FF75C9F1";
+
     }
 
     public String toString(){

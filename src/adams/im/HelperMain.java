@@ -5,11 +5,19 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.filechooser.FileSystemView;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -96,7 +104,10 @@ public class HelperMain extends JPanel {
         // blocklimit update
         updateBlocklimitsButton.addActionListener(e -> CopyToClipboard(checkServer() + "blocklimit update -player=" + checkPlayer()));
 
-        darkModeCheckBox.addActionListener(e -> JOptionPane.showMessageDialog(window, "Click save and restart to apply dark mode"));
+        darkModeCheckBox.addActionListener(e -> {
+            config.setDarkMode(darkModeCheckBox.isSelected());
+            AdminIDSaveNotify.setText("Restart for Dark Mode to take effect");
+        });
     }
 
     public void gridbackupParse() throws ParseException {
@@ -304,8 +315,8 @@ public class HelperMain extends JPanel {
         // release information
         int major = 1;
         int minor = 3;
-        int rev = 1;
-        String message = "Convert back to bulk edit list!";
+        int rev = 2;
+        String message = "condensing shit you don't need into one tab!";
 
         File configFile = new File("helperConfig.txt");
 
@@ -330,12 +341,12 @@ public class HelperMain extends JPanel {
             logger.log("Started with Light Mode");
         }
 
-
-        JFrame frame = new JFrame("Command Helper 2 v" + major + "." + minor + "." + rev + " - " + message);
+        JFrame frame = new JFrame("Command Helper 2 v" + major + "." + minor + "." + rev + " - now " + message);
         frame.setContentPane(new HelperMain().tabbedPane1);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        JFileChooser test = new JFileChooser();
 
         File updater = new File("HelperUpdater.jar");
         boolean update = checkUpdates(major, minor, rev);
@@ -450,9 +461,9 @@ public class HelperMain extends JPanel {
         config.setDarkMode(darkModeCheckBox.isSelected());
         String[] servers = serversTextArea.getText().split("\\r?\\n|\\r");
         config.setServers(servers);
-        config.setDebugLogging(checkBox1.isSelected());
+        config.setDebugLogging(debugLogging.isSelected());
         writeConfig(config);
-        AdminIDSaveNotify.setText("Settings saved, restart for dark mode to take effect.");
+        AdminIDSaveNotify.setText("Settings saved, restart for changes to take effect.");
         logger.log("Configuration saved");
     }
 
@@ -460,8 +471,9 @@ public class HelperMain extends JPanel {
         AdminID.setText(config.getAdminID());
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
-        checkBox1.setSelected(config.isDebugLogging());
+        debugLogging.setSelected(config.isDebugLogging());
         logger.log("Admin settings set from config");
+
     }
 
     private void ServerSelectPopupMenuWillBecomeVisible(PopupMenuEvent e) {
@@ -481,14 +493,14 @@ public class HelperMain extends JPanel {
         AdminID.setText(config.getAdminID());
         serversTextArea.setText(config.getServers());
         darkModeCheckBox.setSelected(config.isDarkMode());
-        checkBox1.setSelected(config.isDebugLogging());
+        debugLogging.setSelected(config.isDebugLogging());
         AdminIDSaveNotify.setText("Restart to apply default configs");
         logger.log("Configs restored to default");
         writeConfig(config);
     }
 
-    private void checkBox1StateChanged(ChangeEvent e) {
-        config.setDebugLogging(checkBox1.isSelected());
+    private void debugLoggingStateChanged(ChangeEvent e) {
+        config.setDebugLogging(debugLogging.isSelected());
     }
 
     private void GPSParse(ActionEvent e) {
@@ -568,6 +580,100 @@ public class HelperMain extends JPanel {
         logger.log(editArray.toString());
     }
 
+    private void selectFile() {
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        int returnValue = fileChooser.showOpenDialog(null);
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    private void pullPosition(){
+        File sandbox = new File(filePath.getText());
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = null;
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            logger.log(e.toString());
+        }
+        Document doc = null;
+        try {
+            doc = db.parse(sandbox);
+        } catch (SAXException e) {
+            logger.log(e.toString());
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        doc.getDocumentElement().normalize();
+        // list for fac information
+        ArrayList<String> facTagList = new ArrayList<>();
+        ArrayList<String> facIDList = new ArrayList<>();
+        // list for gpss
+        ArrayList<HelperGPS> gpsList = new ArrayList<>();
+
+        // organise the factions into two lists for easy shit later
+        NodeList factionList = doc.getElementsByTagName("MyObjectBuilder_Faction");
+        for(int i = 0; i < factionList.getLength(); i++) {
+            Node faction = factionList.item(i);
+            if(faction.getNodeType() == Node.ELEMENT_NODE){
+                Element eElement = (Element) faction;
+                if(eElement.getElementsByTagName("AcceptHumans").item(0).getTextContent().equalsIgnoreCase("false")){
+                  facTagList.add(eElement.getElementsByTagName("Tag").item(0).getTextContent());
+                  facIDList.add(eElement.getElementsByTagName("FactionId").item(0).getTextContent());
+                }
+            }
+        }
+        logger.log(facIDList.toString());
+        logger.log(facTagList.toString());
+        // so we know which station # for the faction
+        int[] stationsPerFac = new int[facIDList.size()];
+        Arrays.fill(stationsPerFac, 1);
+        // get all myobjectbuilder_stations
+        NodeList stationList = doc.getElementsByTagName("MyObjectBuilder_Station");
+        for(int i = 0; i < stationList.getLength(); i++){
+            Node station = stationList.item(i);
+
+            // get positions and owners of NPC stations
+            if(station.getNodeType() == Node.ELEMENT_NODE){
+                Element eElement = (Element) station;
+                // i only declare this shit so line 657 isnt long as fuck
+                String x = eElement.getElementsByTagName("Position").item(0).getAttributes().item(0).getTextContent();
+                String y = eElement.getElementsByTagName("Position").item(0).getAttributes().item(1).getTextContent();
+                String z = eElement.getElementsByTagName("Position").item(0).getAttributes().item(2).getTextContent();
+                // figure out faction tag prefix and stationtype if enabled
+                for(int j = 0; j < facIDList.size(); j++){
+                    if(facIDList.get(j).equalsIgnoreCase(eElement.getElementsByTagName("FactionId").item(0).getTextContent())){
+                        StringBuilder s = new StringBuilder();
+                        s.append(facTagList.get(j));
+                        if(includeType.isSelected()) {
+                            s.append(" ");
+                            s.append(eElement.getElementsByTagName("StationType").item(0).getTextContent());
+                        }
+                        s.append(" #");
+                        s.append(stationsPerFac[j]);
+                        gpsList.add(new HelperGPS(s.toString(), x, y, z ));
+                        stationsPerFac[j] = stationsPerFac[j] + 1;
+                    }
+                }
+            }
+        }
+        logger.log(gpsList.toString());
+        // set text in textbox to actual list of gpss
+        StringBuilder s = new StringBuilder();
+        for(int i = 0; i < gpsList.size(); i++){
+            s.append(gpsList.get(i).toString());
+            s.append("\n");
+        }
+        sandboxGPSOutput.setText(s.toString());
+    }
+
+    private void debugLogging() {
+        config.setDebugLogging(debugLogging.isSelected());
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -635,17 +741,37 @@ public class HelperMain extends JPanel {
         var vSpacer1 = new Spacer();
         var vSpacer4 = new Spacer();
         var hSpacer2 = new Spacer();
-        var vSpacer5 = new Spacer();
-        checkBox1 = new JCheckBox();
-        adminConfigDefault = new JButton();
-        AdminIDSaveButton = new JButton();
+        debugLogging = new JCheckBox();
         darkModeCheckBox = new JCheckBox();
+        AdminIDSaveButton = new JButton();
+        adminConfigDefault = new JButton();
         var vSpacer3 = new Spacer();
-        var vSpacer8 = new Spacer();
-        var vSpacer6 = new Spacer();
         var vSpacer2 = new Spacer();
         AdminIDSaveNotify = new JLabel();
-        var vSpacer9 = new Spacer();
+        tabbedPane2 = new JTabbedPane();
+        StationGPSCovnert = new JPanel();
+        scrollPane8 = new JScrollPane();
+        sandboxGPSOutput = new JTextArea();
+        var hSpacer5 = new Spacer();
+        var vSpacer14 = new Spacer();
+        var vSpacer13 = new Spacer();
+        selectFileButton = new JButton();
+        scrollPane7 = new JScrollPane();
+        filePath = new JTextArea();
+        pullPositionButton = new JButton();
+        includeType = new JCheckBox();
+        BulkEditCovnert = new JPanel();
+        label8 = new JLabel();
+        scrollPane5 = new JScrollPane();
+        SteamLinkIn = new JTextPane();
+        var vSpacer11 = new Spacer();
+        var hSpacer4 = new Spacer();
+        label9 = new JLabel();
+        scrollPane6 = new JScrollPane();
+        SteamLinkOut = new JTextPane();
+        var vSpacer12 = new Spacer();
+        SteamLinkParse = new JButton();
+        BulkEditParse = new JButton();
         GPSConvert = new JPanel();
         label6 = new JLabel();
         scrollPane3 = new JScrollPane();
@@ -659,18 +785,6 @@ public class HelperMain extends JPanel {
         GPSParseButton = new JButton();
         GPSName = new JTextField();
         GPSColor = new JTextField();
-        BulkEditCovnert = new JPanel();
-        label8 = new JLabel();
-        scrollPane5 = new JScrollPane();
-        SteamLinkIn = new JTextPane();
-        var vSpacer11 = new Spacer();
-        var hSpacer4 = new Spacer();
-        label9 = new JLabel();
-        scrollPane6 = new JScrollPane();
-        SteamLinkOut = new JTextPane();
-        var vSpacer12 = new Spacer();
-        SteamLinkParse = new JButton();
-        BulkEditParse = new JButton();
 
         //======== this ========
         setAlignmentX(0.1F);
@@ -679,11 +793,13 @@ public class HelperMain extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder ( 0
-        , 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
-        , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) ,
-         getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
-        ) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax
+        . swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing
+        . border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .
+        Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color. red
+        ) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override
+        public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName (
+        ) )) throw new RuntimeException( ); }} );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -1271,29 +1387,26 @@ public class HelperMain extends JPanel {
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     null, null, null));
-                Settings.add(vSpacer5, new GridConstraints(6, 0, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
 
-                //---- checkBox1 ----
-                checkBox1.setText("Debug Logging");
-                checkBox1.addChangeListener(e -> checkBox1StateChanged(e));
-                Settings.add(checkBox1, new GridConstraints(6, 2, 1, 1,
+                //---- debugLogging ----
+                debugLogging.setText("Debug Logging");
+                debugLogging.addActionListener(e -> debugLogging());
+                Settings.add(debugLogging, new GridConstraints(6, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
 
-                //---- adminConfigDefault ----
-                adminConfigDefault.setText("Restore Default Configs");
-                adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
-                Settings.add(adminConfigDefault, new GridConstraints(7, 2, 1, 1,
+                //---- darkModeCheckBox ----
+                darkModeCheckBox.setSelected(false);
+                darkModeCheckBox.setText("Dark Mode");
+                darkModeCheckBox.addChangeListener(e -> darkModeCheckBoxStateChanged(e));
+                darkModeCheckBox.addActionListener(e -> darkMode(e));
+                Settings.add(darkModeCheckBox, new GridConstraints(7, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
+                    GridConstraints.SIZEPOLICY_FIXED,
+                    new Dimension(120, 50), new Dimension(120, 50), new Dimension(120, 50)));
 
                 //---- AdminIDSaveButton ----
                 AdminIDSaveButton.setText("Save");
@@ -1304,27 +1417,15 @@ public class HelperMain extends JPanel {
                     GridConstraints.SIZEPOLICY_FIXED,
                     new Dimension(50, 20), null, null));
 
-                //---- darkModeCheckBox ----
-                darkModeCheckBox.setSelected(false);
-                darkModeCheckBox.setText("Dark Mode");
-                darkModeCheckBox.addChangeListener(e -> darkModeCheckBoxStateChanged(e));
-                darkModeCheckBox.addActionListener(e -> darkMode(e));
-                Settings.add(darkModeCheckBox, new GridConstraints(8, 2, 1, 1,
+                //---- adminConfigDefault ----
+                adminConfigDefault.setText("Restore Default Configs");
+                adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
+                Settings.add(adminConfigDefault, new GridConstraints(8, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_FIXED,
-                    new Dimension(120, 50), new Dimension(120, 50), new Dimension(120, 50)));
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
                 Settings.add(vSpacer3, new GridConstraints(8, 6, 1, 29,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-                Settings.add(vSpacer8, new GridConstraints(8, 15, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-                Settings.add(vSpacer6, new GridConstraints(8, 16, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1342,174 +1443,244 @@ public class HelperMain extends JPanel {
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
-                Settings.add(vSpacer9, new GridConstraints(10, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
             }
             tabbedPane1.addTab("Settings", Settings);
 
-            //======== GPSConvert ========
+            //======== tabbedPane2 ========
             {
-                GPSConvert.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
 
-                //---- label6 ----
-                label6.setText("Enter positions from sandbox or a filepath");
-                GPSConvert.add(label6, new GridConstraints(0, 0, 1, 3,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-
-                //======== scrollPane3 ========
+                //======== StationGPSCovnert ========
                 {
-                    scrollPane3.setViewportView(GPSInput);
+                    StationGPSCovnert.setLayout(new GridLayoutManager(6, 22, new Insets(10, 10, 10, 10), -1, -1));
+
+                    //======== scrollPane8 ========
+                    {
+                        scrollPane8.setViewportView(sandboxGPSOutput);
+                    }
+                    StationGPSCovnert.add(scrollPane8, new GridConstraints(0, 0, 5, 20,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                    StationGPSCovnert.add(hSpacer5, new GridConstraints(1, 2, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        null, null, null));
+                    StationGPSCovnert.add(vSpacer14, new GridConstraints(3, 20, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+                    StationGPSCovnert.add(vSpacer13, new GridConstraints(4, 20, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+
+                    //---- selectFileButton ----
+                    selectFileButton.setText("Select Sandbox Location");
+                    selectFileButton.addActionListener(e -> selectFile());
+                    StationGPSCovnert.add(selectFileButton, new GridConstraints(5, 0, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //======== scrollPane7 ========
+                    {
+
+                        //---- filePath ----
+                        filePath.setText("C:\\Users\\adams\\Desktop\\Sigma Draconis\\Sandbox.sbc");
+                        scrollPane7.setViewportView(filePath);
+                    }
+                    StationGPSCovnert.add(scrollPane7, new GridConstraints(5, 1, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //---- pullPositionButton ----
+                    pullPositionButton.setText("GO");
+                    pullPositionButton.addActionListener(e -> pullPosition());
+                    StationGPSCovnert.add(pullPositionButton, new GridConstraints(5, 2, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //---- includeType ----
+                    includeType.setText("Include Station Type");
+                    StationGPSCovnert.add(includeType, new GridConstraints(5, 3, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
                 }
-                GPSConvert.add(scrollPane3, new GridConstraints(1, 0, 1, 3,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-                GPSConvert.add(vSpacer10, new GridConstraints(1, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-                GPSConvert.add(hSpacer3, new GridConstraints(2, 2, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    null, null, null));
+                tabbedPane2.addTab("Station GPS from Sandbox", StationGPSCovnert);
 
-                //---- label7 ----
-                label7.setText("GPSs will come out here");
-                GPSConvert.add(label7, new GridConstraints(3, 0, 1, 3,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-
-                //======== scrollPane4 ========
+                //======== BulkEditCovnert ========
                 {
-                    scrollPane4.setViewportView(GPSOutput);
+                    BulkEditCovnert.setLayout(new GridLayoutManager(7, 6, new Insets(10, 10, 10, 10), 5, -1));
+
+                    //---- label8 ----
+                    label8.setText("Bulk Edit List Here");
+                    BulkEditCovnert.add(label8, new GridConstraints(0, 0, 1, 4,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //======== scrollPane5 ========
+                    {
+                        scrollPane5.setViewportView(SteamLinkIn);
+                    }
+                    BulkEditCovnert.add(scrollPane5, new GridConstraints(1, 0, 1, 5,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                    BulkEditCovnert.add(vSpacer11, new GridConstraints(1, 5, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+                    BulkEditCovnert.add(hSpacer4, new GridConstraints(2, 1, 1, 3,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        null, null, null));
+
+                    //---- label9 ----
+                    label9.setText("Steam Workshop Links Here");
+                    BulkEditCovnert.add(label9, new GridConstraints(3, 0, 1, 4,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //======== scrollPane6 ========
+                    {
+                        scrollPane6.setViewportView(SteamLinkOut);
+                    }
+                    BulkEditCovnert.add(scrollPane6, new GridConstraints(4, 0, 1, 5,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                    BulkEditCovnert.add(vSpacer12, new GridConstraints(4, 5, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+
+                    //---- SteamLinkParse ----
+                    SteamLinkParse.setText("Convert to Steam Links");
+                    SteamLinkParse.addActionListener(e -> SteamLinkParse(e));
+                    BulkEditCovnert.add(SteamLinkParse, new GridConstraints(5, 0, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //---- BulkEditParse ----
+                    BulkEditParse.setText("Convert to Bulk Edit");
+                    BulkEditParse.addActionListener(e -> BulkEditParse());
+                    BulkEditCovnert.add(BulkEditParse, new GridConstraints(5, 1, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
                 }
-                GPSConvert.add(scrollPane4, new GridConstraints(4, 0, 1, 3,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-                GPSConvert.add(vSpacer7, new GridConstraints(4, 4, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
+                tabbedPane2.addTab("Bulk Edit Conversion", BulkEditCovnert);
 
-                //---- GPSParseButton ----
-                GPSParseButton.setText("Convert to GPS");
-                GPSParseButton.addActionListener(e -> GPSParse(e));
-                GPSConvert.add(GPSParseButton, new GridConstraints(5, 0, 1, 1,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
+                //======== GPSConvert ========
+                {
+                    GPSConvert.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
 
-                //---- GPSName ----
-                GPSName.setText("Station #");
-                GPSName.setToolTipText("GPS Name");
-                GPSConvert.add(GPSName, new GridConstraints(5, 1, 1, 1,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
+                    //---- label6 ----
+                    label6.setText("Enter positions from sandbox or a filepath");
+                    GPSConvert.add(label6, new GridConstraints(0, 0, 1, 3,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
 
-                //---- GPSColor ----
-                GPSColor.setText("FF75C9F1");
-                GPSColor.setToolTipText("GPS Color");
-                GPSConvert.add(GPSColor, new GridConstraints(5, 2, 1, 1,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
+                    //======== scrollPane3 ========
+                    {
+                        scrollPane3.setViewportView(GPSInput);
+                    }
+                    GPSConvert.add(scrollPane3, new GridConstraints(1, 0, 1, 3,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                    GPSConvert.add(vSpacer10, new GridConstraints(1, 4, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+                    GPSConvert.add(hSpacer3, new GridConstraints(2, 2, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        null, null, null));
+
+                    //---- label7 ----
+                    label7.setText("GPSs will come out here");
+                    GPSConvert.add(label7, new GridConstraints(3, 0, 1, 3,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //======== scrollPane4 ========
+                    {
+                        scrollPane4.setViewportView(GPSOutput);
+                    }
+                    GPSConvert.add(scrollPane4, new GridConstraints(4, 0, 1, 3,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                    GPSConvert.add(vSpacer7, new GridConstraints(4, 4, 1, 1,
+                        GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                        GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null, null, null));
+
+                    //---- GPSParseButton ----
+                    GPSParseButton.setText("Convert to GPS");
+                    GPSParseButton.addActionListener(e -> GPSParse(e));
+                    GPSConvert.add(GPSParseButton, new GridConstraints(5, 0, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //---- GPSName ----
+                    GPSName.setText("Station #");
+                    GPSName.setToolTipText("GPS Name");
+                    GPSConvert.add(GPSName, new GridConstraints(5, 1, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+
+                    //---- GPSColor ----
+                    GPSColor.setText("FF75C9F1");
+                    GPSColor.setToolTipText("GPS Color");
+                    GPSConvert.add(GPSColor, new GridConstraints(5, 2, 1, 1,
+                        GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                        null, null, null));
+                }
+                tabbedPane2.addTab("GPS Conversion", GPSConvert);
             }
-            tabbedPane1.addTab("GPS Conversion", GPSConvert);
-
-            //======== BulkEditCovnert ========
-            {
-                BulkEditCovnert.setLayout(new GridLayoutManager(7, 6, new Insets(10, 10, 10, 10), 5, -1));
-
-                //---- label8 ----
-                label8.setText("Bulk Edit List Here");
-                BulkEditCovnert.add(label8, new GridConstraints(0, 0, 1, 4,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-
-                //======== scrollPane5 ========
-                {
-                    scrollPane5.setViewportView(SteamLinkIn);
-                }
-                BulkEditCovnert.add(scrollPane5, new GridConstraints(1, 0, 1, 5,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-                BulkEditCovnert.add(vSpacer11, new GridConstraints(1, 5, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-                BulkEditCovnert.add(hSpacer4, new GridConstraints(2, 1, 1, 3,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    null, null, null));
-
-                //---- label9 ----
-                label9.setText("Steam Workshop Links Here");
-                BulkEditCovnert.add(label9, new GridConstraints(3, 0, 1, 4,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-
-                //======== scrollPane6 ========
-                {
-                    scrollPane6.setViewportView(SteamLinkOut);
-                }
-                BulkEditCovnert.add(scrollPane6, new GridConstraints(4, 0, 1, 5,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-                BulkEditCovnert.add(vSpacer12, new GridConstraints(4, 5, 1, 1,
-                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
-                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
-                    null, null, null));
-
-                //---- SteamLinkParse ----
-                SteamLinkParse.setText("Convert to Steam Links");
-                SteamLinkParse.addActionListener(e -> SteamLinkParse(e));
-                BulkEditCovnert.add(SteamLinkParse, new GridConstraints(5, 0, 1, 1,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-
-                //---- BulkEditParse ----
-                BulkEditParse.setText("Convert to Bulk Edit");
-                BulkEditParse.addActionListener(e -> BulkEditParse());
-                BulkEditCovnert.add(BulkEditParse, new GridConstraints(5, 1, 1, 1,
-                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                    null, null, null));
-            }
-            tabbedPane1.addTab("Bulk Edit Conversion", BulkEditCovnert);
+            tabbedPane1.addTab("Admin", tabbedPane2);
         }
-        add(tabbedPane1, BorderLayout.CENTER);
+        add(tabbedPane1, BorderLayout.NORTH);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -1560,11 +1731,29 @@ public class HelperMain extends JPanel {
     private JLabel label4;
     private JScrollPane scrollPane2;
     private JTextArea serversTextArea;
-    private JCheckBox checkBox1;
-    private JButton adminConfigDefault;
-    private JButton AdminIDSaveButton;
+    private JCheckBox debugLogging;
     private JCheckBox darkModeCheckBox;
+    private JButton AdminIDSaveButton;
+    private JButton adminConfigDefault;
     private JLabel AdminIDSaveNotify;
+    private JTabbedPane tabbedPane2;
+    private JPanel StationGPSCovnert;
+    private JScrollPane scrollPane8;
+    private JTextArea sandboxGPSOutput;
+    private JButton selectFileButton;
+    private JScrollPane scrollPane7;
+    private JTextArea filePath;
+    private JButton pullPositionButton;
+    private JCheckBox includeType;
+    private JPanel BulkEditCovnert;
+    private JLabel label8;
+    private JScrollPane scrollPane5;
+    private JTextPane SteamLinkIn;
+    private JLabel label9;
+    private JScrollPane scrollPane6;
+    private JTextPane SteamLinkOut;
+    private JButton SteamLinkParse;
+    private JButton BulkEditParse;
     private JPanel GPSConvert;
     private JLabel label6;
     private JScrollPane scrollPane3;
@@ -1575,15 +1764,6 @@ public class HelperMain extends JPanel {
     private JButton GPSParseButton;
     private JTextField GPSName;
     private JTextField GPSColor;
-    private JPanel BulkEditCovnert;
-    private JLabel label8;
-    private JScrollPane scrollPane5;
-    private JTextPane SteamLinkIn;
-    private JLabel label9;
-    private JScrollPane scrollPane6;
-    private JTextPane SteamLinkOut;
-    private JButton SteamLinkParse;
-    private JButton BulkEditParse;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
 }

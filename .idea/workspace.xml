@@ -3,21 +3,26 @@
   <component name="ChangeListManager">
     <list default="true" id="c23e0a77-7646-41c3-a329-68d8648d8747" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CommandHelper2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CommandHelper2.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Command_Helper_2.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelperUpdater/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperCopy.jfd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/helperConfig.txt" beforeDir="false" afterPath="$PROJECT_DIR$/helperConfig.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperGPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperGPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,11 +43,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/HelperUpdater" />
+    <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/dom-2.3.0-jaxb-1.0.6.jar" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="discord-application" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RunManager" selected="JAR Application.HelperJar">
     <configuration name="HelperCopy" type="Application" factoryName="Application">

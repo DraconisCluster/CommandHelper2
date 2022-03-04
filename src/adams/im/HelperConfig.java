@@ -72,4 +72,5 @@ public class HelperConfig implements Serializable {
     public long getSerialVersionUID() {
         return serialVersionUID;
     }
+
 }
