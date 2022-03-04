@@ -3,14 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c23e0a77-7646-41c3-a329-68d8648d8747" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CommandHelper2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CommandHelper2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Command_Helper_2.exe" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/helperConfig.txt" beforeDir="false" afterPath="$PROJECT_DIR$/helperConfig.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperGPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperGPS.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +38,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/dom-2.3.0-jaxb-1.0.6.jar" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

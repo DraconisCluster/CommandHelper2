@@ -76,7 +76,7 @@ public class GridbackupResults extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 int row = dataResultsTable.convertRowIndexToModel(dataResultsTable.getSelectedRow());
 
-                //ClipboardOutput.setText("Row " + row + " selected");
+                logger.log("Gridbackup row " + row + " selected");
 
                 String server2 = "";
                 String fromConsole = "";
@@ -92,9 +92,6 @@ public class GridbackupResults extends JDialog {
     }
     public void CopyToClipboard(String command) {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        if (command.charAt(0) == '!') {
-            command = command.replaceFirst(" ", "");
-        }
         Clipboard clipboard1 = tk.getSystemClipboard();
         StringSelection outputString = new StringSelection(command);
         clipboard1.setContents(outputString, null);
