@@ -21,7 +21,7 @@ new FormModel {
 					"$rowCount": 15
 					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
-					name: "panel1"
+					name: "Commands"
 					auxiliary() {
 						"JavaCodeGenerator.variableLocal": true
 					}
@@ -398,7 +398,7 @@ new FormModel {
 					"$rowCount": 2
 					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
-					name: "panel4"
+					name: "GridBackup"
 					auxiliary() {
 						"JavaCodeGenerator.variableLocal": true
 					}
@@ -471,7 +471,7 @@ new FormModel {
 					"vGap": 0
 					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
-					name: "panel5"
+					name: "Tags"
 					auxiliary() {
 						"JavaCodeGenerator.variableLocal": true
 					}
@@ -642,7 +642,7 @@ new FormModel {
 					"$rowCount": 11
 					"margin": new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
-					name: "panel6"
+					name: "Settings"
 					auxiliary() {
 						"JavaCodeGenerator.variableLocal": true
 					}
@@ -867,7 +867,7 @@ new FormModel {
 					"hGap": 5
 					"margin": &Insets0 new java.awt.Insets( 10, 10, 10, 10 )
 				} ) {
-					name: "panel7"
+					name: "GPSConvert"
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label6"
 						"text": "Enter positions from sandbox or a filepath"
@@ -964,18 +964,18 @@ new FormModel {
 					"title": "GPS Conversion"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
-					"$columnCount": 5
+					"$columnCount": 6
 					"$rowCount": 7
 					"hGap": 5
 					"margin": #Insets0
 				} ) {
-					name: "panel8"
+					name: "BulkEditCovnert"
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label8"
-						"text": "Paste bulk edit list"
+						"text": "Bulk Edit List Here"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"anchor": 8
-						"colSpan": 3
+						"colSpan": 4
 					} )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane5"
@@ -986,7 +986,7 @@ new FormModel {
 						"row": 1
 						"fill": 3
 						"anchor": 8
-						"colSpan": 3
+						"colSpan": 5
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer11"
@@ -994,7 +994,7 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 4
+						"column": 5
 						"row": 1
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
@@ -1005,14 +1005,15 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 2
 						"colSpan": 3
+						"column": 1
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label9"
-						"text": "Steam links come out here"
+						"text": "Steam Workshop Links Here"
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 3
 						"anchor": 8
-						"colSpan": 3
+						"colSpan": 4
 					} )
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane6"
@@ -1023,7 +1024,7 @@ new FormModel {
 						"row": 4
 						"anchor": 8
 						"fill": 3
-						"colSpan": 4
+						"colSpan": 5
 					} )
 					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
 						name: "vSpacer12"
@@ -1031,16 +1032,24 @@ new FormModel {
 							"JavaCodeGenerator.variableLocal": true
 						}
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
-						"column": 4
+						"column": 5
 						"row": 4
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "SteamLinkParse"
 						"text": "Convert to Steam Links"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "GPSParse", true ) )
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "SteamLinkParse", true ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"row": 5
+						"anchor": 8
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "BulkEditParse"
+						"text": "Convert to Bulk Edit"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "BulkEditParse", false ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"column": 1
 						"anchor": 8
 					} )
 				}, new FormLayoutConstraints( null ) {

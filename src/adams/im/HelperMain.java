@@ -28,13 +28,13 @@ import java.util.Date;
 import java.util.Scanner;
 
 
-public class HelperCopy extends JPanel {
+public class HelperMain extends JPanel {
 
     JWindow window = new JWindow();
     static HelperConfig config;
     static HelperLogger logger = new HelperLogger(false);
 
-    public HelperCopy() {
+    public HelperMain() {
         // Gridbackup
         initComponents();
         gridbackupListButton.addActionListener(e -> CopyToClipboard(checkServer() + "gridbackup list " + checkPlayer()));
@@ -285,8 +285,6 @@ public class HelperCopy extends JPanel {
         String updateURL = urlString.substring(0, urlString.indexOf('"'));
         logger.log(updateURL);
 
-        String exeName = "Command Helper 2 v" + major + "." + minor + "." + rev;
-
         InputStream dl = null;
         try {
             dl = new URL(updateURL).openStream();
@@ -306,8 +304,8 @@ public class HelperCopy extends JPanel {
         // release information
         int major = 1;
         int minor = 3;
-        int rev = 0;
-        String message = "Now with auto updating";
+        int rev = 1;
+        String message = "Convert back to bulk edit list!";
 
         File configFile = new File("helperConfig.txt");
 
@@ -334,16 +332,35 @@ public class HelperCopy extends JPanel {
 
 
         JFrame frame = new JFrame("Command Helper 2 v" + major + "." + minor + "." + rev + " - " + message);
-        frame.setContentPane(new HelperCopy().tabbedPane1);
+        frame.setContentPane(new HelperMain().tabbedPane1);
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
+        File updater = new File("HelperUpdater.jar");
         boolean update = checkUpdates(major, minor, rev);
         if(update){
-            JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
-            Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
-            System.exit(0);
+            if(updater.exists()){
+                JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
+                Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+                System.exit(0);
+            } else{
+                JOptionPane.showMessageDialog(frame, "Update is available but updater does not exist, click ok to download");
+                InputStream dl = null;
+                try {
+                    dl = new URL("https://github.com/realadamsben/CommandHelper2/releases/download/Updater/HelperUpdater.jar").openStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Files.copy(dl, Paths.get("HelperUpdater.jar"), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(frame, "Updater downloaded, click ok to update");
+                Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+                System.exit(0);
+            }
         }
 
         frame.addWindowListener(new WindowAdapter() {
@@ -355,7 +372,6 @@ public class HelperCopy extends JPanel {
             }
         });
 
-
     }
 
     private void darkModeCheckBoxStateChanged(ChangeEvent e) {
@@ -363,7 +379,6 @@ public class HelperCopy extends JPanel {
     }
 
     private void darkMode(ActionEvent e) {
-
     }
 
     private void tScripter(ActionEvent e) {
@@ -530,11 +545,35 @@ public class HelperCopy extends JPanel {
     }
 
 
+    private void BulkEditParse() {
+        Scanner in = null;
+        in = new Scanner(SteamLinkOut.getText());
+        ArrayList<String> editArray = new ArrayList<>();
+        while(in.hasNextLine()){
+            String currentLine = in.nextLine();
+            int id = currentLine.indexOf("?id=");
+            int and = currentLine.length();
+            if(currentLine.contains("&")) {
+                and = currentLine.indexOf('&');
+            }
+            String modID = (currentLine.substring(id + 4, and));
+            editArray.add(modID);
+        }
+        StringBuilder s = new StringBuilder();
+        for(int j = 0; j < editArray.size(); j++){
+            s.append(editArray.get(j).toString() + "-Steam\n");
+        }
+        SteamLinkIn.setText(s.toString());
+        logger.log("BulkEdit conversion complete");
+        logger.log(editArray.toString());
+    }
+
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Ben Adams
         tabbedPane1 = new JTabbedPane();
-        var panel1 = new JPanel();
+        var Commands = new JPanel();
         var panel2 = new JPanel();
         var toolBar1 = new JToolBar();
         gridbackupListButton = new JButton();
@@ -562,13 +601,13 @@ public class HelperCopy extends JPanel {
         ServerSelect = new JComboBox<>();
         var label2 = new JLabel();
         clearPlayerButton = new JButton();
-        var panel4 = new JPanel();
+        var GridBackup = new JPanel();
         var toolBar4 = new JToolBar();
         clearBackupButton = new JButton();
         parseButton = new JButton();
         var scrollPane1 = new JScrollPane();
         gridBackupEntry = new JTextArea();
-        var panel5 = new JPanel();
+        var Tags = new JPanel();
         tScripter = new JButton();
         tVote = new JButton();
         tName = new JButton();
@@ -586,7 +625,7 @@ public class HelperCopy extends JPanel {
         tWait2 = new JButton();
         tTime = new JButton();
         tCopiedToClipboard = new JLabel();
-        var panel6 = new JPanel();
+        var Settings = new JPanel();
         AdminID = new JTextField();
         var label3 = new JLabel();
         label5 = new JLabel();
@@ -607,7 +646,7 @@ public class HelperCopy extends JPanel {
         var vSpacer2 = new Spacer();
         AdminIDSaveNotify = new JLabel();
         var vSpacer9 = new Spacer();
-        panel7 = new JPanel();
+        GPSConvert = new JPanel();
         label6 = new JLabel();
         scrollPane3 = new JScrollPane();
         GPSInput = new JTextPane();
@@ -620,7 +659,7 @@ public class HelperCopy extends JPanel {
         GPSParseButton = new JButton();
         GPSName = new JTextField();
         GPSColor = new JTextField();
-        panel8 = new JPanel();
+        BulkEditCovnert = new JPanel();
         label8 = new JLabel();
         scrollPane5 = new JScrollPane();
         SteamLinkIn = new JTextPane();
@@ -631,6 +670,7 @@ public class HelperCopy extends JPanel {
         SteamLinkOut = new JTextPane();
         var vSpacer12 = new Spacer();
         SteamLinkParse = new JButton();
+        BulkEditParse = new JButton();
 
         //======== this ========
         setAlignmentX(0.1F);
@@ -639,13 +679,11 @@ public class HelperCopy extends JPanel {
         setMaximumSize(new Dimension(825, 280));
         setMinimumSize(new Dimension(825, 280));
         setPreferredSize(new Dimension(825, 280));
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
-        .swing.border.EmptyBorder(0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing
-        .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
-        Font("D\u0069al\u006fg",java.awt.Font.BOLD,12),java.awt.Color.red
-        ), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
-        public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062or\u0064er".equals(e.getPropertyName(
-        )))throw new RuntimeException();}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder ( 0
+        , 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM
+        , new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red ) ,
+         getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e
+        ) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
         setLayout(new BorderLayout());
 
         //======== tabbedPane1 ========
@@ -654,9 +692,9 @@ public class HelperCopy extends JPanel {
             tabbedPane1.setToolTipText("Commands, might be useful for tickets or something");
             tabbedPane1.addChangeListener(e -> settingsLoadConfigs(e));
 
-            //======== panel1 ========
+            //======== Commands ========
             {
-                panel1.setLayout(new GridLayoutManager(15, 5, new Insets(10, 10, 10, 10), -1, -1));
+                Commands.setLayout(new GridLayoutManager(15, 5, new Insets(10, 10, 10, 10), -1, -1));
 
                 //======== panel2 ========
                 {
@@ -813,7 +851,7 @@ public class HelperCopy extends JPanel {
                         GridConstraints.SIZEPOLICY_FIXED,
                         null, null, null));
                 }
-                panel1.add(panel2, new GridConstraints(1, 3, 14, 2,
+                Commands.add(panel2, new GridConstraints(1, 3, 14, 2,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -857,12 +895,12 @@ public class HelperCopy extends JPanel {
                         GridConstraints.SIZEPOLICY_CAN_SHRINK,
                         null, null, null));
                 }
-                panel1.add(panel3, new GridConstraints(1, 0, 14, 3,
+                Commands.add(panel3, new GridConstraints(1, 0, 14, 3,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel1.add(PlayerName, new GridConstraints(0, 3, 1, 1,
+                Commands.add(PlayerName, new GridConstraints(0, 3, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -870,7 +908,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label1 ----
                 label1.setText("Playername/SteamID64:   ");
-                panel1.add(label1, new GridConstraints(0, 2, 1, 1,
+                Commands.add(label1, new GridConstraints(0, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -896,7 +934,7 @@ public class HelperCopy extends JPanel {
                         ServerSelectPopupMenuWillBecomeVisible(e);
                     }
                 });
-                panel1.add(ServerSelect, new GridConstraints(0, 1, 1, 1,
+                Commands.add(ServerSelect, new GridConstraints(0, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -904,7 +942,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label2 ----
                 label2.setText("  Server:   ");
-                panel1.add(label2, new GridConstraints(0, 0, 1, 1,
+                Commands.add(label2, new GridConstraints(0, 0, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -913,17 +951,17 @@ public class HelperCopy extends JPanel {
                 //---- clearPlayerButton ----
                 clearPlayerButton.setText("Clear");
                 clearPlayerButton.setToolTipText("Clear playername");
-                panel1.add(clearPlayerButton, new GridConstraints(0, 4, 1, 1,
+                Commands.add(clearPlayerButton, new GridConstraints(0, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
             }
-            tabbedPane1.addTab("Commands", panel1);
+            tabbedPane1.addTab("Commands", Commands);
 
-            //======== panel4 ========
+            //======== GridBackup ========
             {
-                panel4.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
+                GridBackup.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
 
                 //======== toolBar4 ========
                 {
@@ -946,7 +984,7 @@ public class HelperCopy extends JPanel {
                     toolBar4.add(parseButton);
                     toolBar4.addSeparator();
                 }
-                panel4.add(toolBar4, new GridConstraints(1, 0, 1, 1,
+                GridBackup.add(toolBar4, new GridConstraints(1, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -959,22 +997,22 @@ public class HelperCopy extends JPanel {
                     gridBackupEntry.setText("");
                     scrollPane1.setViewportView(gridBackupEntry);
                 }
-                panel4.add(scrollPane1, new GridConstraints(0, 0, 1, 1,
+                GridBackup.add(scrollPane1, new GridConstraints(0, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
             }
-            tabbedPane1.addTab("Grid Backup", panel4);
+            tabbedPane1.addTab("Grid Backup", GridBackup);
 
-            //======== panel5 ========
+            //======== Tags ========
             {
-                panel5.setLayout(new GridLayoutManager(8, 7, new Insets(10, 10, 10, 10), 0, 0));
+                Tags.setLayout(new GridLayoutManager(8, 7, new Insets(10, 10, 10, 10), 0, 0));
 
                 //---- tScripter ----
                 tScripter.setText("/t scripter");
                 tScripter.addActionListener(e -> tScripter(e));
-                panel5.add(tScripter, new GridConstraints(0, 0, 1, 1,
+                Tags.add(tScripter, new GridConstraints(0, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -986,7 +1024,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tVote(e);
 		});
-                panel5.add(tVote, new GridConstraints(0, 2, 1, 1,
+                Tags.add(tVote, new GridConstraints(0, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -998,7 +1036,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tName(e);
 		});
-                panel5.add(tName, new GridConstraints(0, 4, 1, 1,
+                Tags.add(tName, new GridConstraints(0, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1010,7 +1048,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tSupply(e);
 		});
-                panel5.add(tSupply, new GridConstraints(0, 6, 1, 1,
+                Tags.add(tSupply, new GridConstraints(0, 6, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1022,7 +1060,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tFixship(e);
 		});
-                panel5.add(tFixship, new GridConstraints(2, 0, 1, 1,
+                Tags.add(tFixship, new GridConstraints(2, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1034,7 +1072,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tSDNN(e);
 		});
-                panel5.add(tSDNN, new GridConstraints(2, 2, 1, 1,
+                Tags.add(tSDNN, new GridConstraints(2, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1046,7 +1084,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWikiEdit(e);
 		});
-                panel5.add(tWikiEdit, new GridConstraints(2, 4, 1, 1,
+                Tags.add(tWikiEdit, new GridConstraints(2, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1058,7 +1096,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWiki(e);
 		});
-                panel5.add(tWiki, new GridConstraints(2, 6, 1, 1,
+                Tags.add(tWiki, new GridConstraints(2, 6, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1070,7 +1108,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tCleanup(e);
 		});
-                panel5.add(tCleanup, new GridConstraints(4, 0, 1, 1,
+                Tags.add(tCleanup, new GridConstraints(4, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1082,7 +1120,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tLog(e);
 		});
-                panel5.add(tLog, new GridConstraints(4, 2, 1, 1,
+                Tags.add(tLog, new GridConstraints(4, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1094,7 +1132,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tLoadCrash(e);
 		});
-                panel5.add(tLoadCrash, new GridConstraints(4, 4, 1, 1,
+                Tags.add(tLoadCrash, new GridConstraints(4, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1106,7 +1144,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tConntrouble(e);
 		});
-                panel5.add(tConntrouble, new GridConstraints(4, 6, 1, 1,
+                Tags.add(tConntrouble, new GridConstraints(4, 6, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1118,7 +1156,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tDIE(e);
 		});
-                panel5.add(tDIE, new GridConstraints(6, 0, 1, 1,
+                Tags.add(tDIE, new GridConstraints(6, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1130,7 +1168,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWait(e);
 		});
-                panel5.add(tWait, new GridConstraints(6, 2, 1, 1,
+                Tags.add(tWait, new GridConstraints(6, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1142,7 +1180,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tWait2(e);
 		});
-                panel5.add(tWait2, new GridConstraints(6, 4, 1, 1,
+                Tags.add(tWait2, new GridConstraints(6, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1154,7 +1192,7 @@ public class HelperCopy extends JPanel {
 			tScripter(e);
 			tTime(e);
 		});
-                panel5.add(tTime, new GridConstraints(6, 6, 1, 1,
+                Tags.add(tTime, new GridConstraints(6, 6, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1162,18 +1200,18 @@ public class HelperCopy extends JPanel {
 
                 //---- tCopiedToClipboard ----
                 tCopiedToClipboard.setText("#");
-                panel5.add(tCopiedToClipboard, new GridConstraints(7, 0, 1, 7,
+                Tags.add(tCopiedToClipboard, new GridConstraints(7, 0, 1, 7,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
             }
-            tabbedPane1.addTab("xelA Tags", panel5);
+            tabbedPane1.addTab("xelA Tags", Tags);
 
-            //======== panel6 ========
+            //======== Settings ========
             {
-                panel6.setLayout(new GridLayoutManager(11, 35, new Insets(10, 10, 10, 10), -1, -1));
-                panel6.add(AdminID, new GridConstraints(2, 1, 1, 34,
+                Settings.setLayout(new GridLayoutManager(11, 35, new Insets(10, 10, 10, 10), -1, -1));
+                Settings.add(AdminID, new GridConstraints(2, 1, 1, 34,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1181,7 +1219,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label3 ----
                 label3.setText("Enter  your SteamID64 and click save.");
-                panel6.add(label3, new GridConstraints(0, 1, 2, 34,
+                Settings.add(label3, new GridConstraints(0, 1, 2, 34,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1189,7 +1227,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label5 ----
                 label5.setText("Customize servers available in server select here");
-                panel6.add(label5, new GridConstraints(3, 1, 1, 1,
+                Settings.add(label5, new GridConstraints(3, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1197,7 +1235,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label4 ----
                 label4.setText("Unless using default configs, use the prefixes for the servers (x0 instead of DXL, x1 instead of DX1, etc.)");
-                panel6.add(label4, new GridConstraints(3, 2, 1, 1,
+                Settings.add(label4, new GridConstraints(3, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1213,27 +1251,27 @@ public class HelperCopy extends JPanel {
                     serversTextArea.setColumns(1);
                     scrollPane2.setViewportView(serversTextArea);
                 }
-                panel6.add(scrollPane2, new GridConstraints(4, 1, 4, 1,
+                Settings.add(scrollPane2, new GridConstraints(4, 1, 4, 1,
                     GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
-                panel6.add(vSpacer1, new GridConstraints(6, 34, 2, 1,
+                Settings.add(vSpacer1, new GridConstraints(6, 34, 2, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer4, new GridConstraints(4, 33, 1, 1,
+                Settings.add(vSpacer4, new GridConstraints(4, 33, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(hSpacer2, new GridConstraints(4, 32, 1, 1,
+                Settings.add(hSpacer2, new GridConstraints(4, 32, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     null, null, null));
-                panel6.add(vSpacer5, new GridConstraints(6, 0, 1, 1,
+                Settings.add(vSpacer5, new GridConstraints(6, 0, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1242,7 +1280,7 @@ public class HelperCopy extends JPanel {
                 //---- checkBox1 ----
                 checkBox1.setText("Debug Logging");
                 checkBox1.addChangeListener(e -> checkBox1StateChanged(e));
-                panel6.add(checkBox1, new GridConstraints(6, 2, 1, 1,
+                Settings.add(checkBox1, new GridConstraints(6, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1251,7 +1289,7 @@ public class HelperCopy extends JPanel {
                 //---- adminConfigDefault ----
                 adminConfigDefault.setText("Restore Default Configs");
                 adminConfigDefault.addActionListener(e -> adminConfigDefault(e));
-                panel6.add(adminConfigDefault, new GridConstraints(7, 2, 1, 1,
+                Settings.add(adminConfigDefault, new GridConstraints(7, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1260,7 +1298,7 @@ public class HelperCopy extends JPanel {
                 //---- AdminIDSaveButton ----
                 AdminIDSaveButton.setText("Save");
                 AdminIDSaveButton.addActionListener(e -> AdminStuffSave(e));
-                panel6.add(AdminIDSaveButton, new GridConstraints(8, 1, 1, 1,
+                Settings.add(AdminIDSaveButton, new GridConstraints(8, 1, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
@@ -1271,27 +1309,27 @@ public class HelperCopy extends JPanel {
                 darkModeCheckBox.setText("Dark Mode");
                 darkModeCheckBox.addChangeListener(e -> darkModeCheckBoxStateChanged(e));
                 darkModeCheckBox.addActionListener(e -> darkMode(e));
-                panel6.add(darkModeCheckBox, new GridConstraints(8, 2, 1, 1,
+                Settings.add(darkModeCheckBox, new GridConstraints(8, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_FIXED,
                     new Dimension(120, 50), new Dimension(120, 50), new Dimension(120, 50)));
-                panel6.add(vSpacer3, new GridConstraints(8, 6, 1, 29,
+                Settings.add(vSpacer3, new GridConstraints(8, 6, 1, 29,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer8, new GridConstraints(8, 15, 1, 1,
+                Settings.add(vSpacer8, new GridConstraints(8, 15, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer6, new GridConstraints(8, 16, 1, 1,
+                Settings.add(vSpacer6, new GridConstraints(8, 16, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel6.add(vSpacer2, new GridConstraints(8, 18, 1, 13,
+                Settings.add(vSpacer2, new GridConstraints(8, 18, 1, 13,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1299,26 +1337,26 @@ public class HelperCopy extends JPanel {
 
                 //---- AdminIDSaveNotify ----
                 AdminIDSaveNotify.setText("#");
-                panel6.add(AdminIDSaveNotify, new GridConstraints(9, 1, 1, 1,
+                Settings.add(AdminIDSaveNotify, new GridConstraints(9, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_FIXED,
                     GridConstraints.SIZEPOLICY_FIXED,
                     null, null, null));
-                panel6.add(vSpacer9, new GridConstraints(10, 2, 1, 1,
+                Settings.add(vSpacer9, new GridConstraints(10, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
             }
-            tabbedPane1.addTab("Settings", panel6);
+            tabbedPane1.addTab("Settings", Settings);
 
-            //======== panel7 ========
+            //======== GPSConvert ========
             {
-                panel7.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
+                GPSConvert.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
 
                 //---- label6 ----
                 label6.setText("Enter positions from sandbox or a filepath");
-                panel7.add(label6, new GridConstraints(0, 0, 1, 3,
+                GPSConvert.add(label6, new GridConstraints(0, 0, 1, 3,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1328,17 +1366,17 @@ public class HelperCopy extends JPanel {
                 {
                     scrollPane3.setViewportView(GPSInput);
                 }
-                panel7.add(scrollPane3, new GridConstraints(1, 0, 1, 3,
+                GPSConvert.add(scrollPane3, new GridConstraints(1, 0, 1, 3,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel7.add(vSpacer10, new GridConstraints(1, 4, 1, 1,
+                GPSConvert.add(vSpacer10, new GridConstraints(1, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel7.add(hSpacer3, new GridConstraints(2, 2, 1, 1,
+                GPSConvert.add(hSpacer3, new GridConstraints(2, 2, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
@@ -1346,7 +1384,7 @@ public class HelperCopy extends JPanel {
 
                 //---- label7 ----
                 label7.setText("GPSs will come out here");
-                panel7.add(label7, new GridConstraints(3, 0, 1, 3,
+                GPSConvert.add(label7, new GridConstraints(3, 0, 1, 3,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1356,12 +1394,12 @@ public class HelperCopy extends JPanel {
                 {
                     scrollPane4.setViewportView(GPSOutput);
                 }
-                panel7.add(scrollPane4, new GridConstraints(4, 0, 1, 3,
+                GPSConvert.add(scrollPane4, new GridConstraints(4, 0, 1, 3,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel7.add(vSpacer7, new GridConstraints(4, 4, 1, 1,
+                GPSConvert.add(vSpacer7, new GridConstraints(4, 4, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1370,7 +1408,7 @@ public class HelperCopy extends JPanel {
                 //---- GPSParseButton ----
                 GPSParseButton.setText("Convert to GPS");
                 GPSParseButton.addActionListener(e -> GPSParse(e));
-                panel7.add(GPSParseButton, new GridConstraints(5, 0, 1, 1,
+                GPSConvert.add(GPSParseButton, new GridConstraints(5, 0, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1379,7 +1417,7 @@ public class HelperCopy extends JPanel {
                 //---- GPSName ----
                 GPSName.setText("Station #");
                 GPSName.setToolTipText("GPS Name");
-                panel7.add(GPSName, new GridConstraints(5, 1, 1, 1,
+                GPSConvert.add(GPSName, new GridConstraints(5, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1388,21 +1426,21 @@ public class HelperCopy extends JPanel {
                 //---- GPSColor ----
                 GPSColor.setText("FF75C9F1");
                 GPSColor.setToolTipText("GPS Color");
-                panel7.add(GPSColor, new GridConstraints(5, 2, 1, 1,
+                GPSConvert.add(GPSColor, new GridConstraints(5, 2, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
             }
-            tabbedPane1.addTab("GPS Conversion", panel7);
+            tabbedPane1.addTab("GPS Conversion", GPSConvert);
 
-            //======== panel8 ========
+            //======== BulkEditCovnert ========
             {
-                panel8.setLayout(new GridLayoutManager(7, 5, new Insets(10, 10, 10, 10), 5, -1));
+                BulkEditCovnert.setLayout(new GridLayoutManager(7, 6, new Insets(10, 10, 10, 10), 5, -1));
 
                 //---- label8 ----
-                label8.setText("Paste bulk edit list");
-                panel8.add(label8, new GridConstraints(0, 0, 1, 3,
+                label8.setText("Bulk Edit List Here");
+                BulkEditCovnert.add(label8, new GridConstraints(0, 0, 1, 4,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1412,25 +1450,25 @@ public class HelperCopy extends JPanel {
                 {
                     scrollPane5.setViewportView(SteamLinkIn);
                 }
-                panel8.add(scrollPane5, new GridConstraints(1, 0, 1, 3,
+                BulkEditCovnert.add(scrollPane5, new GridConstraints(1, 0, 1, 5,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel8.add(vSpacer11, new GridConstraints(1, 4, 1, 1,
+                BulkEditCovnert.add(vSpacer11, new GridConstraints(1, 5, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     null, null, null));
-                panel8.add(hSpacer4, new GridConstraints(2, 0, 1, 3,
+                BulkEditCovnert.add(hSpacer4, new GridConstraints(2, 1, 1, 3,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     null, null, null));
 
                 //---- label9 ----
-                label9.setText("Steam links come out here");
-                panel8.add(label9, new GridConstraints(3, 0, 1, 3,
+                label9.setText("Steam Workshop Links Here");
+                BulkEditCovnert.add(label9, new GridConstraints(3, 0, 1, 4,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1440,12 +1478,12 @@ public class HelperCopy extends JPanel {
                 {
                     scrollPane6.setViewportView(SteamLinkOut);
                 }
-                panel8.add(scrollPane6, new GridConstraints(4, 0, 1, 4,
+                BulkEditCovnert.add(scrollPane6, new GridConstraints(4, 0, 1, 5,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_BOTH,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
-                panel8.add(vSpacer12, new GridConstraints(4, 4, 1, 1,
+                BulkEditCovnert.add(vSpacer12, new GridConstraints(4, 5, 1, 1,
                     GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK,
                     GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -1453,17 +1491,23 @@ public class HelperCopy extends JPanel {
 
                 //---- SteamLinkParse ----
                 SteamLinkParse.setText("Convert to Steam Links");
-                SteamLinkParse.addActionListener(e -> {
-			GPSParse(e);
-			SteamLinkParse(e);
-		});
-                panel8.add(SteamLinkParse, new GridConstraints(5, 0, 1, 1,
+                SteamLinkParse.addActionListener(e -> SteamLinkParse(e));
+                BulkEditCovnert.add(SteamLinkParse, new GridConstraints(5, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //---- BulkEditParse ----
+                BulkEditParse.setText("Convert to Bulk Edit");
+                BulkEditParse.addActionListener(e -> BulkEditParse());
+                BulkEditCovnert.add(BulkEditParse, new GridConstraints(5, 1, 1, 1,
                     GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                     null, null, null));
             }
-            tabbedPane1.addTab("Bulk Edit Conversion", panel8);
+            tabbedPane1.addTab("Bulk Edit Conversion", BulkEditCovnert);
         }
         add(tabbedPane1, BorderLayout.CENTER);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -1521,7 +1565,7 @@ public class HelperCopy extends JPanel {
     private JButton AdminIDSaveButton;
     private JCheckBox darkModeCheckBox;
     private JLabel AdminIDSaveNotify;
-    private JPanel panel7;
+    private JPanel GPSConvert;
     private JLabel label6;
     private JScrollPane scrollPane3;
     private JTextPane GPSInput;
@@ -1531,7 +1575,7 @@ public class HelperCopy extends JPanel {
     private JButton GPSParseButton;
     private JTextField GPSName;
     private JTextField GPSColor;
-    private JPanel panel8;
+    private JPanel BulkEditCovnert;
     private JLabel label8;
     private JScrollPane scrollPane5;
     private JTextPane SteamLinkIn;
@@ -1539,5 +1583,7 @@ public class HelperCopy extends JPanel {
     private JScrollPane scrollPane6;
     private JTextPane SteamLinkOut;
     private JButton SteamLinkParse;
+    private JButton BulkEditParse;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
+
 }

@@ -2,22 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c23e0a77-7646-41c3-a329-68d8648d8747" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/HelperUpdater/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HelperUpdater/src/HelperUpdater.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperGPS.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperLogger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperSteamLink.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CommandHelper2_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CommandHelper2_jar2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CommandHelper2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CommandHelper2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helperConfig.txt" beforeDir="false" afterPath="$PROJECT_DIR$/helperConfig.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperCopy.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperCopy.jfd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Command_Helper_2.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HelperUpdater/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperCopy.jfd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperCopy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperCopy.jfd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperCopy.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +22,14 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="ProjectId" id="25qbjrqoaYWmr6bW08ODqenf9Dm" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,14 +38,15 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts/CommandHelper2_jar/CommandHelper2.jar" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/HelperUpdater" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="discord-application" />
   </component>
   <component name="RunManager" selected="JAR Application.HelperJar">
     <configuration name="HelperCopy" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="adams.im.HelperCopy" />
+      <option name="MAIN_CLASS_NAME" value="adams.im.HelperMain" />
       <module name="CommandHelper2" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -69,5 +73,17 @@
       <updated>1646257704624</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

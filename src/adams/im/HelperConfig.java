@@ -62,7 +62,7 @@ public class HelperConfig implements Serializable {
     public boolean isDebugLogging(){
         return debugLogging;
     }
-
+    
     public void restoreDefaults(){
         this.adminID = "your steamID64";
         this.darkMode = false;
