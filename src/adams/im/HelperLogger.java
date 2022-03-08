@@ -2,21 +2,24 @@ package adams.im;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HelperLogger {
 
+
     private boolean enabled;
     File logFile = new File("helperLog.log");
-    PrintWriter write;
+    PrintStream write;
+
 
     public HelperLogger(boolean enabled) {
         this.enabled = enabled;
-        PrintWriter write = null;
+        PrintStream write = null;
         try {
-            write = new PrintWriter(logFile);
+            write = new PrintStream(logFile);
             this.write = write;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -41,4 +44,7 @@ public class HelperLogger {
         this.enabled = enabled;
     }
 
+    public PrintStream getPrintStream(){
+        return write;
+    }
 }

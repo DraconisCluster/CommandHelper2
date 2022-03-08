@@ -52,6 +52,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Gridbackup List"
 								"toolTipText": "List gridbackups"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "gridbackupList", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator2"
@@ -66,6 +67,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Hangar List"
 								"toolTipText": "List hangar"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "hangarList", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator3"
@@ -80,6 +82,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Owned Grids List"
 								"toolTipText": "List the grids a player has ownership of"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ownedGridsList", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator4"
@@ -91,6 +94,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Created Grids List"
 								"toolTipText": "List the grids a player has created"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createdGridsList", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator5"
@@ -124,6 +128,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Scripter"
 								"toolTipText": "Set scripter rank"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "scripter", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator7"
@@ -138,6 +143,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Transfer Grid"
 								"toolTipText": "Run while looking at a grid to transfer to player"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "transferGrid", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator8"
@@ -152,6 +158,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Get SteamID64"
 								"toolTipText": "Get player steamid"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "getSteamID64", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator9"
@@ -166,6 +173,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "List Players"
 								"toolTipText": "Get a list of players on the server"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "listPlayers", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator10"
@@ -200,6 +208,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Online Servers"
 								"toolTipText": "See online servers"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "onlineServers", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator12"
@@ -214,6 +223,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Controller Uptime"
 								"toolTipText": "Get uptime of the Nexus controllers"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clusterUptime", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator13"
@@ -228,6 +238,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Check Blocklimits"
 								"toolTipText": "Check blocklimits of a player"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "checkBlocklimits", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator14"
@@ -242,6 +253,7 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 125, 50 )
 								"text": "Update Blocklimits"
 								"toolTipText": "Update a players blocklimts"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "updateBlocklimits", false ) )
 							} )
 							add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 								name: "separator15"
@@ -284,6 +296,7 @@ new FormModel {
 							name: "clearAdminSettingsButton"
 							"text": "Clear Admin Settings"
 							"toolTipText": "YOU MUST RUN THIS AFTER LEAVING ADMIN MODE"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearAdminSettings", false ) )
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"row": 2
 							"fill": 3
@@ -295,6 +308,7 @@ new FormModel {
 							"text": "Admin Mode"
 							"toolTipText": "Set admin rank"
 							"verifyInputWhenFocusTarget": true
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "adminMode", false ) )
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"fill": 3
 							"vSizePolicy": 0
@@ -305,6 +319,7 @@ new FormModel {
 							"borderPainted": true
 							"text": "Player Mode"
 							"toolTipText": "Remove admin rank"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "playerMode", false ) )
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"row": 1
 							"fill": 3
@@ -385,6 +400,7 @@ new FormModel {
 						name: "clearPlayerButton"
 						"text": "Clear"
 						"toolTipText": "Clear playername"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearPlayer", false ) )
 					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 						"column": 4
 						"fill": 1
@@ -420,6 +436,7 @@ new FormModel {
 							"minimumSize": new java.awt.Dimension( 78, 50 )
 							"preferredSize": new java.awt.Dimension( 78, 50 )
 							"text": "Clear"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "clearBackup", false ) )
 						} )
 						add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 							name: "separator17"
@@ -433,7 +450,7 @@ new FormModel {
 							"minimumSize": new java.awt.Dimension( 78, 50 )
 							"preferredSize": new java.awt.Dimension( 78, 50 )
 							"text": "Parse"
-							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "gridBackupParse", false ) )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "parse", false ) )
 						} )
 						add( new FormComponent( "javax.swing.JToolBar$Separator" ) {
 							name: "separator18"
@@ -1183,6 +1200,21 @@ new FormModel {
 						} )
 					}, new FormLayoutConstraints( null ) {
 						"title": "GPS Conversion"
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+						"$columnCount": 2
+						"$rowCount": 3
+					} ) {
+						name: "CubeBlockEditor"
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "editorStartButton"
+							"text": "Start"
+						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+							"row": 1
+						} )
+					}, new FormLayoutConstraints( null ) {
+						"title": "CubeBlock Editor"
+						"enabled": false
 					} )
 				}, new FormLayoutConstraints( null ) {
 					"title": "Admin"

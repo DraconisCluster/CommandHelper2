@@ -3,6 +3,7 @@ package adams.im;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -45,65 +46,7 @@ public class HelperMain extends JPanel {
 
         initComponents();
     }
-        // Gridbackup
-        gridbackupListButton.addActionListener(e -> CopyToClipboard(checkServer() + "gridbackup list " + checkPlayer()));
-        // HM List
-        hangarListButton.addActionListener(e -> CopyToClipboard(checkServer() + "hm list " + checkPlayer()));
-        // Owner List
-        ownedGridsListButton.addActionListener(e -> CopyToClipboard(checkServer() + "listgridsowner  " + checkPlayer()));
-        // Author List
-        createdGridsListButton.addActionListener(e -> CopyToClipboard(checkServer() + "listgridsauthor  " + checkPlayer()));
-        // Parse Gridbackup
-        parseButton.addActionListener(e -> {
-            gridbackupParse();
-        });
-        // clear gridbackup entry
-        clearBackupButton.addActionListener(e -> gridBackupEntry.setText(""));
-        // clear playerid entry
-        clearPlayerButton.addActionListener(e -> PlayerName.setText(""));
-        // scripter
-        scripterButton.addActionListener(e -> CopyToClipboard(checkServer() + "admin setrank " + checkPlayer() + " 1"));
-        // transfer
-        transferGridButton.addActionListener(e -> CopyToClipboard("!" + " transfer " + checkPlayer()));
-        //getsteamid
-        getSteamID64Button.addActionListener(e -> CopyToClipboard(checkServer() + "getsteamid " + checkPlayer()));
-        // admin playerlist
-        listPlayersButton.addActionListener(e -> CopyToClipboard(checkServer() + "admin playerlist"));
-        // admin mode
-        adminModeButton.addActionListener(e -> CopyToClipboard(checkServer() + "admin setrank " + AdminID.getText() + " 4"));
-        // not admin mode
-        playerModeButton.addActionListener(e -> CopyToClipboard(checkServer() + "admin setrank " + AdminID.getText() + " 1"));
-        // clear adminsettings
-        clearAdminSettingsButton.addActionListener(e -> {
-            String server = checkServer();
 
-            if (server.charAt(0) == 'x') {
-                server = "DX";
-                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
-            } else if (server.charAt(0) == 'd') {
-                server = "D";
-                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
-            } else if (server.charAt(0) == 'R') {
-                server = "R";
-                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
-            } else
-                CopyToClipboard("DX" + " admin clearadminsettings " + AdminID.getText());
-
-        });
-
-        // nexus stuff
-        onlineServersButton.addActionListener(e -> CopyToClipboard("/nexus onlineservers"));
-        // more nexus stuff
-        clusterUptimeButton.addActionListener(e -> CopyToClipboard("/nexus uptime"));
-        // blocklimit limit
-        checkBlocklimitsButton.addActionListener(e -> CopyToClipboard(checkServer() + "blocklimit playerlimit " + checkPlayer()));
-        // blocklimit update
-        updateBlocklimitsButton.addActionListener(e -> CopyToClipboard(checkServer() + "blocklimit update -player=" + checkPlayer()));
-
-        darkModeCheckBox.addActionListener(e -> {
-            config.setDarkMode(darkModeCheckBox.isSelected());
-            AdminIDSaveNotify.setText("Restart for Dark Mode to take effect");
-        });
 
 
         public void gridbackupParse () {
@@ -267,15 +210,20 @@ public class HelperMain extends JPanel {
             int remoteMinor = Integer.parseInt(latestRelease.substring(2, 3));
             int remoteRev = Integer.parseInt(latestRelease.substring(4, 5));
             // check if actual updates are needed
+            String[] returnArray = new String[4];
 
             int thisVersion = (thisMajor * 100) + (thisMinor * 10) + thisRev;
             int remoteVersion = (remoteMajor * 100) + (remoteMinor * 10) + remoteRev;
+            returnArray[1] = String.valueOf(remoteMajor);
+            returnArray[2] = String.valueOf(remoteMinor);
+            returnArray[3] = String.valueOf(remoteRev);
 
             if (remoteVersion > thisVersion) {
-                return true;
+                returnArray[0] = "true";
             } else {
-                return false;
+                returnArray[0] = "false";
             }
+            return returnArray;
 
 
         }
@@ -307,6 +255,8 @@ public class HelperMain extends JPanel {
 
                 logger.setEnabled(config.isDebugLogging());
 
+                System.setErr(logger.getPrintStream());
+
                 if (config.isDarkMode()) {
                     FlatDarkLaf.setup();
                     logger.log("Started with Dark Mode");
@@ -324,7 +274,7 @@ public class HelperMain extends JPanel {
 
                 File updater = new File("HelperUpdater.jar");
                 String[] update = checkUpdates(major, minor, rev);
-                if (update) {
+                if (update.equals("true")) {
                     if (updater.exists()) {
                         JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
 
@@ -692,10 +642,18 @@ public class HelperMain extends JPanel {
                 reader = new FileReader(ticket);
             } catch (FileNotFoundException e) {
                 logger.log(e.toString());
-                JOptionPane.showMessageDialog(new JFrame(), "Ticket parsing failed:\n " + e.toString());
+                JOptionPane.showMessageDialog(new JFrame(), "Ticket parsing failed:\n" + e.toString());
+                return;
             }
             Gson gson = new Gson();
-            HelperTicket helpTicket = gson.fromJson(reader, HelperTicket.class);
+            HelperTicket helpTicket = null;
+            try {
+                helpTicket = gson.fromJson(reader, HelperTicket.class);
+            } catch (JsonSyntaxException e){
+                logger.log(e.toString());
+                JOptionPane.showMessageDialog(new JFrame(), "Parsing ticket failed:\n" + e.toString());
+                return;
+            }
             String ticketString = helpTicket.toString();
 
             // this is such a shitty way of doing this lmfao
@@ -740,12 +698,89 @@ public class HelperMain extends JPanel {
         }
 
         private void adminMode() {
-            // TODO add your code here
+            CopyToClipboard(checkServer() + "admin setrank " + AdminID.getText() + " 4");
         }
 
-        private void gridBackupParse() {
-            // TODO add your code here
+        private void playerMode() {
+            CopyToClipboard(checkServer() + "admin setrank " + AdminID.getText() + " 1");
         }
+
+        private void clearAdminSettings() {
+            String server = checkServer();
+            if (server.charAt(0) == 'x') {
+                server = "DX";
+                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
+            } else if (server.charAt(0) == 'd') {
+                server = "D";
+                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
+            } else if (server.charAt(0) == 'R') {
+                server = "R";
+                CopyToClipboard(server + " admin clearadminsettings " + AdminID.getText());
+            } else
+                CopyToClipboard("DX" + " admin clearadminsettings " + AdminID.getText());
+
+        }
+
+        private void gridbackupList() {
+            CopyToClipboard(checkServer() + "gridbackup list " + checkPlayer());
+        }
+
+        private void hangarList() {
+            CopyToClipboard(checkServer() + "hm list " + checkPlayer());
+        }
+
+        private void ownedGridsList() {
+            CopyToClipboard(checkServer() + "listgridsowner  " + checkPlayer());
+        }
+
+        private void createdGridsList() {
+            CopyToClipboard(checkServer() + "listgridsauthor  " + checkPlayer());
+        }
+
+        private void scripter() {
+            CopyToClipboard(checkServer() + "admin setrank " + checkPlayer() + " 1");
+        }
+
+        private void transferGrid() {
+            CopyToClipboard("!" + " transfer " + checkPlayer());
+        }
+
+        private void listPlayers() {
+            CopyToClipboard(checkServer() + "admin playerlist");
+        }
+
+        private void onlineServers() {
+            CopyToClipboard("/nexus onlineservers");
+        }
+
+        private void clusterUptime() {
+            CopyToClipboard("/nexus uptime");
+        }
+
+        private void checkBlocklimits() {
+            CopyToClipboard(checkServer() + "blocklimit playerlimit " + checkPlayer());
+        }
+
+        private void updateBlocklimits() {
+            CopyToClipboard(checkServer() + "blocklimit update -player=" + checkPlayer()) ;
+        }
+
+        private void clearPlayer() {
+            PlayerName.setText("");
+        }
+
+        private void getSteamID64() {
+            CopyToClipboard(checkServer() + "getsteamid " + checkPlayer());
+        }
+
+        private void clearBackup() {
+            gridBackupEntry.setText("");
+        }
+
+        private void parse() {
+            gridbackupParse();
+        }
+
         
         private void initComponents () {
             // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -866,6 +901,8 @@ public class HelperMain extends JPanel {
             GPSParseButton = new JButton();
             GPSName = new JTextField();
             GPSColor = new JTextField();
+            CubeBlockEditor = new JPanel();
+            editorStartButton = new JButton();
 
             //======== this ========
             setAlignmentX(0.1F);
@@ -901,6 +938,7 @@ public class HelperMain extends JPanel {
                             gridbackupListButton.setPreferredSize(new Dimension(125, 50));
                             gridbackupListButton.setText("Gridbackup List");
                             gridbackupListButton.setToolTipText("List gridbackups");
+                            gridbackupListButton.addActionListener(e -> gridbackupList());
                             toolBar1.add(gridbackupListButton);
                             toolBar1.addSeparator();
 
@@ -910,6 +948,7 @@ public class HelperMain extends JPanel {
                             hangarListButton.setPreferredSize(new Dimension(125, 50));
                             hangarListButton.setText("Hangar List");
                             hangarListButton.setToolTipText("List hangar");
+                            hangarListButton.addActionListener(e -> hangarList());
                             toolBar1.add(hangarListButton);
                             toolBar1.addSeparator();
 
@@ -919,6 +958,7 @@ public class HelperMain extends JPanel {
                             ownedGridsListButton.setPreferredSize(new Dimension(125, 50));
                             ownedGridsListButton.setText("Owned Grids List");
                             ownedGridsListButton.setToolTipText("List the grids a player has ownership of");
+                            ownedGridsListButton.addActionListener(e -> ownedGridsList());
                             toolBar1.add(ownedGridsListButton);
                             toolBar1.addSeparator();
 
@@ -928,6 +968,7 @@ public class HelperMain extends JPanel {
                             createdGridsListButton.setPreferredSize(new Dimension(125, 50));
                             createdGridsListButton.setText("Created Grids List");
                             createdGridsListButton.setToolTipText("List the grids a player has created");
+                            createdGridsListButton.addActionListener(e -> createdGridsList());
                             toolBar1.add(createdGridsListButton);
                             toolBar1.addSeparator();
                         }
@@ -949,6 +990,7 @@ public class HelperMain extends JPanel {
                             scripterButton.setPreferredSize(new Dimension(125, 50));
                             scripterButton.setText("Scripter");
                             scripterButton.setToolTipText("Set scripter rank");
+                            scripterButton.addActionListener(e -> scripter());
                             toolBar2.add(scripterButton);
                             toolBar2.addSeparator();
 
@@ -958,6 +1000,7 @@ public class HelperMain extends JPanel {
                             transferGridButton.setPreferredSize(new Dimension(125, 50));
                             transferGridButton.setText("Transfer Grid");
                             transferGridButton.setToolTipText("Run while looking at a grid to transfer to player");
+                            transferGridButton.addActionListener(e -> transferGrid());
                             toolBar2.add(transferGridButton);
                             toolBar2.addSeparator();
 
@@ -967,6 +1010,7 @@ public class HelperMain extends JPanel {
                             getSteamID64Button.setPreferredSize(new Dimension(125, 50));
                             getSteamID64Button.setText("Get SteamID64");
                             getSteamID64Button.setToolTipText("Get player steamid");
+                            getSteamID64Button.addActionListener(e -> getSteamID64());
                             toolBar2.add(getSteamID64Button);
                             toolBar2.addSeparator();
 
@@ -976,6 +1020,7 @@ public class HelperMain extends JPanel {
                             listPlayersButton.setPreferredSize(new Dimension(125, 50));
                             listPlayersButton.setText("List Players");
                             listPlayersButton.setToolTipText("Get a list of players on the server");
+                            listPlayersButton.addActionListener(e -> listPlayers());
                             toolBar2.add(listPlayersButton);
                             toolBar2.addSeparator();
                         }
@@ -997,6 +1042,7 @@ public class HelperMain extends JPanel {
                             onlineServersButton.setPreferredSize(new Dimension(125, 50));
                             onlineServersButton.setText("Online Servers");
                             onlineServersButton.setToolTipText("See online servers");
+                            onlineServersButton.addActionListener(e -> onlineServers());
                             toolBar3.add(onlineServersButton);
                             toolBar3.addSeparator();
 
@@ -1006,6 +1052,7 @@ public class HelperMain extends JPanel {
                             clusterUptimeButton.setPreferredSize(new Dimension(125, 50));
                             clusterUptimeButton.setText("Controller Uptime");
                             clusterUptimeButton.setToolTipText("Get uptime of the Nexus controllers");
+                            clusterUptimeButton.addActionListener(e -> clusterUptime());
                             toolBar3.add(clusterUptimeButton);
                             toolBar3.addSeparator();
 
@@ -1015,6 +1062,7 @@ public class HelperMain extends JPanel {
                             checkBlocklimitsButton.setPreferredSize(new Dimension(125, 50));
                             checkBlocklimitsButton.setText("Check Blocklimits");
                             checkBlocklimitsButton.setToolTipText("Check blocklimits of a player");
+                            checkBlocklimitsButton.addActionListener(e -> checkBlocklimits());
                             toolBar3.add(checkBlocklimitsButton);
                             toolBar3.addSeparator();
 
@@ -1024,6 +1072,7 @@ public class HelperMain extends JPanel {
                             updateBlocklimitsButton.setPreferredSize(new Dimension(125, 50));
                             updateBlocklimitsButton.setText("Update Blocklimits");
                             updateBlocklimitsButton.setToolTipText("Update a players blocklimts");
+                            updateBlocklimitsButton.addActionListener(e -> updateBlocklimits());
                             toolBar3.add(updateBlocklimitsButton);
                             toolBar3.addSeparator();
                         }
@@ -1054,6 +1103,7 @@ public class HelperMain extends JPanel {
                         //---- clearAdminSettingsButton ----
                         clearAdminSettingsButton.setText("Clear Admin Settings");
                         clearAdminSettingsButton.setToolTipText("YOU MUST RUN THIS AFTER LEAVING ADMIN MODE");
+                        clearAdminSettingsButton.addActionListener(e -> clearAdminSettings());
                         panel3.add(clearAdminSettingsButton, new GridConstraints(2, 0, 1, 1,
                             GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                             GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1064,6 +1114,7 @@ public class HelperMain extends JPanel {
                         adminModeButton.setText("Admin Mode");
                         adminModeButton.setToolTipText("Set admin rank");
                         adminModeButton.setVerifyInputWhenFocusTarget(true);
+                        adminModeButton.addActionListener(e -> adminMode());
                         panel3.add(adminModeButton, new GridConstraints(0, 0, 1, 1,
                             GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                             GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1074,6 +1125,7 @@ public class HelperMain extends JPanel {
                         playerModeButton.setBorderPainted(true);
                         playerModeButton.setText("Player Mode");
                         playerModeButton.setToolTipText("Remove admin rank");
+                        playerModeButton.addActionListener(e -> playerMode());
                         panel3.add(playerModeButton, new GridConstraints(1, 0, 1, 1,
                             GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
                             GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1141,6 +1193,7 @@ public class HelperMain extends JPanel {
                     //---- clearPlayerButton ----
                     clearPlayerButton.setText("Clear");
                     clearPlayerButton.setToolTipText("Clear playername");
+                    clearPlayerButton.addActionListener(e -> clearPlayer());
                     Commands.add(clearPlayerButton, new GridConstraints(0, 4, 1, 1,
                         GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -1163,6 +1216,7 @@ public class HelperMain extends JPanel {
                         clearBackupButton.setMinimumSize(new Dimension(78, 50));
                         clearBackupButton.setPreferredSize(new Dimension(78, 50));
                         clearBackupButton.setText("Clear");
+                        clearBackupButton.addActionListener(e -> clearBackup());
                         toolBar4.add(clearBackupButton);
                         toolBar4.addSeparator();
 
@@ -1171,7 +1225,7 @@ public class HelperMain extends JPanel {
                         parseButton.setMinimumSize(new Dimension(78, 50));
                         parseButton.setPreferredSize(new Dimension(78, 50));
                         parseButton.setText("Parse");
-                        parseButton.addActionListener(e -> gridBackupParse());
+                        parseButton.addActionListener(e -> parse());
                         toolBar4.add(parseButton);
                         toolBar4.addSeparator();
                     }
@@ -1811,6 +1865,21 @@ public class HelperMain extends JPanel {
                             null, null, null));
                     }
                     tabbedPane2.addTab("GPS Conversion", GPSConvert);
+
+                    //======== CubeBlockEditor ========
+                    {
+                        CubeBlockEditor.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+
+                        //---- editorStartButton ----
+                        editorStartButton.setText("Start");
+                        CubeBlockEditor.add(editorStartButton, new GridConstraints(1, 0, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                    }
+                    tabbedPane2.addTab("CubeBlock Editor", CubeBlockEditor);
+                    tabbedPane2.setEnabledAt(3, false);
                 }
                 tabbedPane1.addTab("Admin", tabbedPane2);
             }
@@ -1904,6 +1973,8 @@ public class HelperMain extends JPanel {
         private JButton GPSParseButton;
         private JTextField GPSName;
         private JTextField GPSColor;
+        private JPanel CubeBlockEditor;
+        private JButton editorStartButton;
         // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     }
