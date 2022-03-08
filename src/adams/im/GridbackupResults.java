@@ -1,6 +1,8 @@
 package adams.im;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -9,6 +11,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 public class GridbackupResults extends JDialog {
@@ -71,25 +75,37 @@ public class GridbackupResults extends JDialog {
             pack();
             setVisible(true);
 
+            dataResultsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                getCommand(server, player, entityID);
+                }
+            });
+
             copySelected.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int row = dataResultsTable.convertRowIndexToModel(dataResultsTable.getSelectedRow());
-
-                logger.log("Gridbackup row " + row + " selected");
-
-                String server2 = "";
-                String fromConsole = "";
-                if(inGame.isSelected()) {
-                    server2 = "!";
-                } else {
-                    server2 = server;
-                    fromConsole = " true false";
-                }
-                CopyToClipboard(server2 + "gridbackup restore " + player + " " + entityID[row] + " " + 1 + fromConsole);
+                getCommand(server, player, entityID);
             }
         });
     }
+
+    public void getCommand(String server, String player, String[] entityID ){
+        int row = dataResultsTable.convertRowIndexToModel(dataResultsTable.getSelectedRow());
+
+        logger.log("Gridbackup row " + row + " selected");
+
+        String server2 = "";
+        String fromConsole = "";
+        if(inGame.isSelected()) {
+            server2 = "!";
+        } else {
+            server2 = server;
+            fromConsole = " true false";
+        }
+        CopyToClipboard(server2 + "gridbackup restore " + player + " " + entityID[row] + " " + 1 + fromConsole);
+    }
+
     public void CopyToClipboard(String command) {
         Toolkit tk = Toolkit.getDefaultToolkit();
         Clipboard clipboard1 = tk.getSystemClipboard();

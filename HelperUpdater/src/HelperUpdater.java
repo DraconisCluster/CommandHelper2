@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 public class HelperUpdater {
 
     public static void main(String[] args){
+<<<<<<< Updated upstream
         URL url = null;
         try {
             url = new URL("https://api.github.com/repos/realadamsben/CommandHelper2/releases");
@@ -29,7 +31,25 @@ public class HelperUpdater {
         int updatePosition = git.indexOf("\"browser_download_url\":");
         String urlString = git.substring(updatePosition+24);
         String updateURL = urlString.substring(0, urlString.indexOf('"'));
+=======
 
+        if(args.length == 0){
+>>>>>>> Stashed changes
+
+            JOptionPane.showMessageDialog(new JFrame(), "Updater run standalone, downloading version 1.3.3" );
+
+            String updateURL = "https://github.com/realadamsben/CommandHelper2/releases/download/v1.3.3/Command_Helper_2.exe";
+
+            doUpdate(updateURL);
+        } else {
+
+            String updateURL = "https://github.com/realadamsben/CommandHelper2/releases/download/v" + args[0] + "." + args[1] + "." + args[2] + "/Command_Helper_2.exe";
+
+            doUpdate(updateURL);
+        }
+    }
+
+    private static void doUpdate(String updateURL) {
         File oldHelper = new File("Command_Helper_2.exe");
         oldHelper.delete();
 

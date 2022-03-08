@@ -32,6 +32,7 @@ public class HelperLogger {
             write.append(dateString + " : " + s + "\n");
         }
     }
+
     public void save(){
         write.close();
     }

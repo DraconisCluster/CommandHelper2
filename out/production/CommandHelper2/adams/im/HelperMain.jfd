@@ -638,6 +638,85 @@ new FormModel {
 					"title": "xelA Tags"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
+					"$columnCount": 10
+					"$rowCount": 6
+					"margin": new java.awt.Insets( 10, 10, 10, 10 )
+				} ) {
+					name: "OldTickets"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label10"
+						"text": "Output"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"anchor": 8
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane9"
+						add( new FormComponent( "javax.swing.JTextPane" ) {
+							name: "ticketTextPane"
+						} )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"colSpan": 10
+						"rowSpan": 3
+						"fill": 3
+						"row": 1
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.VSpacer" ) {
+						name: "vSpacer5"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 8
+						"row": 3
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+						name: "hSpacer6"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 4
+						"column": 1
+					} )
+					add( new FormComponent( "com.jformdesigner.designer.wrapper.HSpacer" ) {
+						name: "hSpacer7"
+						auxiliary() {
+							"JavaCodeGenerator.variableLocal": true
+						}
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 4
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "selectFileTicket"
+						"text": "Select File Location"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "selectFileTicket", false ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"row": 5
+						"anchor": 8
+					} )
+					add( new FormComponent( "javax.swing.JTextField" ) {
+						name: "fileLocationTicket"
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 1
+						"row": 5
+						"fill": 1
+						"anchor": 8
+						"preferredSize": new java.awt.Dimension( 500, 10 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ticketParseGo"
+						"text": "GO"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "ticketParseGo", false ) )
+					}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
+						"column": 2
+						"row": 5
+						"anchor": 8
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Old Tickets"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.intellij.uiDesigner.core.GridLayoutManager ) {
 					"$columnCount": 35
 					"$rowCount": 11
 					"margin": new java.awt.Insets( 10, 10, 10, 10 )
@@ -883,13 +962,13 @@ new FormModel {
 							name: "scrollPane7"
 							add( new FormComponent( "javax.swing.JTextArea" ) {
 								name: "filePath"
-								"text": "C:\\Users\\adams\\Desktop\\Sigma Draconis\\Sandbox.sbc"
 							} )
 						}, new FormLayoutConstraints( class com.intellij.uiDesigner.core.GridConstraints ) {
 							"row": 5
 							"anchor": 8
 							"fill": 1
 							"column": 1
+							"minimumSize": new java.awt.Dimension( 500, 25 )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "pullPositionButton"

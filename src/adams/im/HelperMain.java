@@ -2,6 +2,7 @@ package adams.im;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.google.gson.Gson;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -26,14 +27,12 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class HelperMain extends JPanel {
@@ -54,12 +53,7 @@ public class HelperMain extends JPanel {
         createdGridsListButton.addActionListener(e -> CopyToClipboard(checkServer() + "listgridsauthor  " + checkPlayer()));
         // Parse Gridbackup
         parseButton.addActionListener(e -> {
-            try {
-                gridbackupParse();
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-                logger.log(ex.toString());
-            }
+            gridbackupParse();
         });
         // clear gridbackup entry
         clearBackupButton.addActionListener(e -> gridBackupEntry.setText(""));
@@ -110,17 +104,22 @@ public class HelperMain extends JPanel {
         });
     }
 
-    public void gridbackupParse() throws ParseException {
+    public void gridbackupParse() {
 
         String[] lines = gridBackupEntry.getText().split("\\r?\\n"); // make array of lines
 
         ArrayList<String> lines2 = new ArrayList<>(Arrays.asList(lines)); // array into arraylistbecause easier
         ArrayList<String> lines3 = new ArrayList<>();
 
-        for (String s : lines2) { // remove not gridbackups
+        try{
+            for (String s : lines2) { // remove not gridbackups
             if (Character.isDigit(s.charAt(0))) {
                 lines3.add(s);
             }
+        }
+        } catch(StringIndexOutOfBoundsException ex){
+            JOptionPane.showMessageDialog(new JFrame(), "Parsing gridbackups failed:\n " + ex.toString());
+            return;
         }
         ArrayList<GridBackup> Grids = new ArrayList<>();
 
@@ -142,7 +141,12 @@ public class HelperMain extends JPanel {
 
             //Convert String dateTime to Date
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-            Date backupDate = format.parse(dateTime);
+            Date backupDate = null;
+            try {
+                backupDate = format.parse(dateTime);
+            } catch (ParseException e) {
+                logger.log(e.toString());
+            }
             format.applyPattern("yyyy-MM-dd kk:mm:ss");
 
 
@@ -209,8 +213,8 @@ public class HelperMain extends JPanel {
             //System.out.println("The Object  was succesfully written to a file");
             logger.log("Config successfully written to file");
         } catch (Exception ex) {
-            ex.printStackTrace();
             logger.log(ex.toString());
+            JOptionPane.showMessageDialog(new JFrame(), "Config saving failed:\n " + ex.toString());
         }
     }
 
@@ -226,7 +230,8 @@ public class HelperMain extends JPanel {
             objectIn.close();
             return (HelperConfig) obj;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(ex.toString());
+            JOptionPane.showMessageDialog(new JFrame(), "Config loading failed:\n " + ex.toString());
             return null;
         }
     }
@@ -239,6 +244,7 @@ public class HelperMain extends JPanel {
             url = new URL("https://api.github.com/repos/realadamsben/CommandHelper2/releases");
         } catch (MalformedURLException e) {
             logger.log(e.toString());
+            JOptionPane.showMessageDialog(new JFrame(), "Update check failed:\n " + e.toString());
         }
         BufferedReader in = null;
         try {
@@ -272,6 +278,7 @@ public class HelperMain extends JPanel {
 
     }
 
+<<<<<<< Updated upstream
     private static void doUpdate(int major, int minor, int rev){
         URL url = null;
         try {
@@ -311,17 +318,30 @@ public class HelperMain extends JPanel {
 
 
     public static void main(String[] args) throws IOException {
+=======
+    public static void main(String[] args){
+>>>>>>> Stashed changes
 
         // release information
         int major = 1;
         int minor = 3;
+<<<<<<< Updated upstream
         int rev = 2;
         String message = "condensing shit you don't need into one tab!";
+=======
+        int rev = 4;
+        String message = "with parsing old tickets!";
+>>>>>>> Stashed changes
 
         File configFile = new File("helperConfig.txt");
 
         if(!configFile.exists()) {
-            configFile.createNewFile();
+            try {
+                configFile.createNewFile();
+            } catch (IOException e) {
+                logger.log(e.toString());
+                JOptionPane.showMessageDialog(new JFrame(), "Config loading failed:\n " + e.toString());
+            }
             config = new HelperConfig();
             writeConfig(config);
             logger.log("Config file does not exist, creating new config file");
@@ -331,7 +351,6 @@ public class HelperMain extends JPanel {
         config = readConfig();
 
         logger.setEnabled(config.isDebugLogging());
-
 
         if(config.isDarkMode()) {
             FlatDarkLaf.setup();
@@ -353,7 +372,19 @@ public class HelperMain extends JPanel {
         if(update){
             if(updater.exists()){
                 JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
+<<<<<<< Updated upstream
                 Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+=======
+                try {
+                    InputStream dl = null;
+                    dl = new URL("https://github.com/realadamsben/CommandHelper2/releases/download/Updater/HelperUpdater.jar").openStream();
+                    Files.copy(dl, Paths.get("HelperUpdater.jar"), StandardCopyOption.REPLACE_EXISTING);
+                    Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar " + update[1] + " " + update[2] + " " + update[3]);
+                } catch (IOException e) {
+                    logger.log(e.toString());
+                    JOptionPane.showMessageDialog(new JFrame(), "Updater starting failed:\n " + e.toString());
+                }
+>>>>>>> Stashed changes
                 System.exit(0);
             } else{
                 JOptionPane.showMessageDialog(frame, "Update is available but updater does not exist, click ok to download");
@@ -361,15 +392,21 @@ public class HelperMain extends JPanel {
                 try {
                     dl = new URL("https://github.com/realadamsben/CommandHelper2/releases/download/Updater/HelperUpdater.jar").openStream();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(e.toString());
                 }
                 try {
                     Files.copy(dl, Paths.get("HelperUpdater.jar"), StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(e.toString());
                 }
                 JOptionPane.showMessageDialog(frame, "Updater downloaded, click ok to update");
-                Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+                try {
+                    Process proc = Runtime.getRuntime().exec("java -jar HelperUpdater.jar");
+                } catch (IOException e) {
+                    logger.log(e.toString());
+                    JOptionPane.showMessageDialog(new JFrame(), "Updater starting failed:\n " + e.toString());
+
+                }
                 System.exit(0);
             }
         }
@@ -512,7 +549,6 @@ public class HelperMain extends JPanel {
                 in = new Scanner(GPSInFile);
                 logger.log("File found successfully");
             } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
                 logger.log(ex.toString());
             }
         } else {
@@ -590,7 +626,8 @@ public class HelperMain extends JPanel {
     }
 
     private void pullPosition(){
-        File sandbox = new File(filePath.getText());
+        File sandbox = null;
+        sandbox = new File(filePath.getText());
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = null;
@@ -598,6 +635,7 @@ public class HelperMain extends JPanel {
             db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             logger.log(e.toString());
+            JOptionPane.showMessageDialog(new JFrame(), "Parsing sandbox failed:\n " + e.toString());
         }
         Document doc = null;
         try {
@@ -607,6 +645,7 @@ public class HelperMain extends JPanel {
         } catch (IOException e) {
             logger.log(e.toString());
         }
+
         doc.getDocumentElement().normalize();
         // list for fac information
         ArrayList<String> facTagList = new ArrayList<>();
@@ -674,6 +713,81 @@ public class HelperMain extends JPanel {
         config.setDebugLogging(debugLogging.isSelected());
     }
 
+<<<<<<< Updated upstream
+=======
+    private void start() {
+        JFrame frame = new JFrame("Test");
+        frame.setContentPane(new HelperBlockEditor(logger));
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void selectFileTicket() {
+        JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        int returnValue = fileChooser.showOpenDialog(null);
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            File selectedFile = fileChooser.getSelectedFile();
+            fileLocationTicket.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    private void ticketParseGo() {
+
+        File ticket = new File(fileLocationTicket.getText());
+        Reader reader  = null;
+        try {
+            reader = new FileReader(ticket);
+        } catch (FileNotFoundException e) {
+            logger.log(e.toString());
+            JOptionPane.showMessageDialog(new JFrame(), "Ticket parsing failed:\n " + e.toString());
+        }
+        Gson gson = new Gson();
+        HelperTicket helpTicket = gson.fromJson(reader, HelperTicket.class);
+        String ticketString = helpTicket.toString();
+
+        // this is such a shitty way of doing this lmfao
+        Path ticketPath = Path.of(String.valueOf(ticket.getAbsolutePath()));
+        String json = null;
+        try {
+            json = Files.readString(ticketPath);
+        } catch (IOException e) {
+            logger.log(e.toString());
+        }
+        int firstUsers = json.indexOf("users");
+        int firstMessages = json.indexOf("messages");
+        String usersString = json.substring(firstUsers + 8, firstMessages -3);
+
+        System.out.println(usersString);
+
+        ArrayList<String> idList = new ArrayList<>();
+        ArrayList<String> nameList = new ArrayList<>();
+
+        while(usersString.contains("username")){
+            // get id string
+            String idString = usersString.substring(0, usersString.indexOf(':')+1);
+            if(idString.contains("}")) {
+                idString = idString.substring(idString.indexOf('}'));
+            } else{
+                idString = idString;
+            }
+            idList.add(idString.substring(idString.indexOf('"')+1, idString.lastIndexOf('"')));
+            // get name string
+            String nameString = usersString.substring(usersString.indexOf("username")+12);
+            nameList.add(nameString.substring(0, nameString.indexOf('"')));
+
+            usersString = usersString.substring(usersString.indexOf(nameString));
+        }
+
+        for(int i = 0; i < idList.size(); i++){
+            ticketString = ticketString.replaceAll(idList.get(i), nameList.get(i));
+        }
+
+        ticketTextPane.setText(ticketString);
+
+    }
+
+>>>>>>> Stashed changes
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -731,6 +845,16 @@ public class HelperMain extends JPanel {
         tWait2 = new JButton();
         tTime = new JButton();
         tCopiedToClipboard = new JLabel();
+        OldTickets = new JPanel();
+        label10 = new JLabel();
+        scrollPane9 = new JScrollPane();
+        ticketTextPane = new JTextPane();
+        var vSpacer5 = new Spacer();
+        var hSpacer6 = new Spacer();
+        var hSpacer7 = new Spacer();
+        selectFileTicket = new JButton();
+        fileLocationTicket = new JTextField();
+        ticketParseGo = new JButton();
         var Settings = new JPanel();
         AdminID = new JTextField();
         var label3 = new JLabel();
@@ -1324,6 +1448,68 @@ public class HelperMain extends JPanel {
             }
             tabbedPane1.addTab("xelA Tags", Tags);
 
+            //======== OldTickets ========
+            {
+                OldTickets.setLayout(new GridLayoutManager(6, 10, new Insets(10, 10, 10, 10), -1, -1));
+
+                //---- label10 ----
+                label10.setText("Output");
+                OldTickets.add(label10, new GridConstraints(0, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+
+                //======== scrollPane9 ========
+                {
+                    scrollPane9.setViewportView(ticketTextPane);
+                }
+                OldTickets.add(scrollPane9, new GridConstraints(1, 0, 3, 10,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                OldTickets.add(vSpacer5, new GridConstraints(3, 8, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    null, null, null));
+                OldTickets.add(hSpacer6, new GridConstraints(4, 1, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    null, null, null));
+                OldTickets.add(hSpacer7, new GridConstraints(4, 2, 1, 1,
+                    GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                    GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                    null, null, null));
+
+                //---- selectFileTicket ----
+                selectFileTicket.setText("Select File Location");
+                selectFileTicket.addActionListener(e -> selectFileTicket());
+                OldTickets.add(selectFileTicket, new GridConstraints(5, 0, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+                OldTickets.add(fileLocationTicket, new GridConstraints(5, 1, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, new Dimension(500, 10), null));
+
+                //---- ticketParseGo ----
+                ticketParseGo.setText("GO");
+                ticketParseGo.addActionListener(e -> ticketParseGo());
+                OldTickets.add(ticketParseGo, new GridConstraints(5, 2, 1, 1,
+                    GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                    null, null, null));
+            }
+            tabbedPane1.addTab("Old Tickets", OldTickets);
+
             //======== Settings ========
             {
                 Settings.setLayout(new GridLayoutManager(11, 35, new Insets(10, 10, 10, 10), -1, -1));
@@ -1489,16 +1675,13 @@ public class HelperMain extends JPanel {
 
                     //======== scrollPane7 ========
                     {
-
-                        //---- filePath ----
-                        filePath.setText("C:\\Users\\adams\\Desktop\\Sigma Draconis\\Sandbox.sbc");
                         scrollPane7.setViewportView(filePath);
                     }
                     StationGPSCovnert.add(scrollPane7, new GridConstraints(5, 1, 1, 1,
                         GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                         GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                        null, null, null));
+                        new Dimension(500, 25), null, null));
 
                     //---- pullPositionButton ----
                     pullPositionButton.setText("GO");
@@ -1726,6 +1909,13 @@ public class HelperMain extends JPanel {
     private JButton tWait2;
     private JButton tTime;
     private JLabel tCopiedToClipboard;
+    private JPanel OldTickets;
+    private JLabel label10;
+    private JScrollPane scrollPane9;
+    private JTextPane ticketTextPane;
+    private JButton selectFileTicket;
+    private JTextField fileLocationTicket;
+    private JButton ticketParseGo;
     private JTextField AdminID;
     private JLabel label5;
     private JLabel label4;
