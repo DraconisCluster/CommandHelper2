@@ -1,43 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c23e0a77-7646-41c3-a329-68d8648d8747" name="Changes" comment="">
-<<<<<<< Updated upstream
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helperConfig.txt" beforeDir="false" afterPath="$PROJECT_DIR$/helperConfig.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" afterDir="false" />
-=======
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperAttachment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperContent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperTicket.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/adams/im/HelperUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CommandHelper2_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/CommandHelper2_jar.xml" afterDir="false" />
+    <list default="true" id="7134091c-4ca8-4488-9b3a-0af68ddf40bc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CommandHelper2_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/CommandHelper2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/CommandHelper2_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CommandHelper2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CommandHelper2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/Command_Helper_2.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelperUpdater/src/HelperUpdater.java" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/src/HelperUpdater.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/CommandHelper2/adams/im/HelperMain.jfd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/CubeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/CubeBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/CubeBlockThrust.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/GridbackupResults.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperBlockEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperBlockEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adams/im/HelperLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" beforeDir="false" afterPath="$PROJECT_DIR$/HelperUpdater/HelperUpdater.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" beforeDir="false" afterPath="$PROJECT_DIR$/src/adams/im/HelperMain.jfd" afterDir="false" />
->>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,7 +30,14 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="ProjectId" id="25qbjrqoaYWmr6bW08ODqenf9Dm" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="266DIQtPRGJka7EsrJ8FVVbs9nh" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -58,53 +45,26 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="codeWithMe.voiceChat.enabledByDefault" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/gson-2.9.0.jar" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/forms_rt.jar" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-  </component>
-  <component name="RunManager" selected="JAR Application.HelperJar">
-    <configuration name="HelperCopy" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="adams.im.HelperMain" />
-      <module name="CommandHelper2" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HelperJar" type="JarApplication">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/out/artifacts/CommandHelper2_jar/CommandHelper2.jar" />
-      <option name="WORKING_DIRECTORY" value="E:\Documents\GitHub\CommandHelper2" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method v="2" />
-    </configuration>
-    <list>
-      <item itemvalue="Application.HelperCopy" />
-      <item itemvalue="JAR Application.HelperJar" />
-    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c23e0a77-7646-41c3-a329-68d8648d8747" name="Changes" comment="" />
-      <created>1646257704624</created>
+      <changelist id="7134091c-4ca8-4488-9b3a-0af68ddf40bc" name="Changes" comment="" />
+      <created>1646735066164</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1646257704624</updated>
-<<<<<<< Updated upstream
-=======
-      <workItem from="1646427337084" duration="76000" />
-      <workItem from="1646427429310" duration="104000" />
-      <workItem from="1646427561110" duration="2661000" />
-      <workItem from="1646456121215" duration="735000" />
-      <workItem from="1646610184181" duration="2058000" />
-      <workItem from="1646612265152" duration="45000" />
-      <workItem from="1646646147287" duration="1908000" />
-      <workItem from="1646715649441" duration="17483000" />
->>>>>>> Stashed changes
+      <updated>1646735066164</updated>
+      <workItem from="1646735066725" duration="1297000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -116,9 +76,5 @@
         </entry>
       </map>
     </option>
-<<<<<<< Updated upstream
-    <option name="oldMeFiltersMigrated" value="true" />
-=======
->>>>>>> Stashed changes
   </component>
 </project>
