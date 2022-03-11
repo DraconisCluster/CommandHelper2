@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="HelperUpdater">
+    <output-path>$PROJECT_DIR$/out/artifacts/HelperUpdater</output-path>
+    <root id="archive" name="HelperUpdater.jar">
+      <element id="module-output" name="HelperUpdater" />
+    </root>
+  </artifact>
+</component>
