@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/dom-2.3.0-jaxb-1.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/forms_rt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/gson-2.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/flatlaf-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
