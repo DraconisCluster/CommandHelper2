@@ -3,6 +3,7 @@ package adams.im;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -151,11 +152,17 @@ public class HelperMain extends JPanel {
         public static void writeConfig (HelperConfig config){
 
             try {
-                FileOutputStream fileOut = new FileOutputStream("helperConfig.txt");
-                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-                objectOut.writeObject(config);
-                objectOut.close();
-                //System.out.println("The Object  was succesfully written to a file");
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                File configFile = new File("helper.cfg");
+                PrintStream write = null;
+                try {
+                    write = new PrintStream(configFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                write.print(gson.toJson(config));
+                write.close();
+
                 logger.log("Config successfully written to file");
             } catch (Exception ex) {
                 logger.log(ex.toString());
@@ -164,21 +171,22 @@ public class HelperMain extends JPanel {
         }
 
         public static HelperConfig readConfig () {
-
-            try {
-                FileInputStream fileIn = new FileInputStream("helperConfig.txt");
-                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-
-                Object obj = objectIn.readObject();
-
-                //System.out.println("The Object has been read from the file");
-                objectIn.close();
-                return (HelperConfig) obj;
-            } catch (Exception ex) {
-                logger.log(ex.toString());
-                JOptionPane.showMessageDialog(new JFrame(), "Config loading failed:\n " + ex.toString());
-                return null;
+            HelperConfig c;
+            File configFile = new File("helper.cfg");
+            if(!configFile.exists()){
+                c = new HelperConfig();
+                c.restoreDefaults();
+            } else {
+                Reader reader = null;
+                try {
+                    reader = new FileReader(configFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Gson gson = new Gson();
+                c = gson.fromJson(reader, HelperConfig.class);
             }
+            return c;
         }
         private static String[] checkUpdates ( int major, int minor, int rev){
             int thisMajor = major;
@@ -233,10 +241,10 @@ public class HelperMain extends JPanel {
                 // release information
                 int major = 1;
                 int minor = 3;
-                int rev = 4;
-                String message = "with parsing old tickets!";
+                int rev = 2;
+                String message = "with balls!!!!!!";
 
-                File configFile = new File("helperConfig.txt");
+                File configFile = new File("helper.cfg");
 
                 if (!configFile.exists()) {
                     try {
@@ -255,7 +263,7 @@ public class HelperMain extends JPanel {
 
                 logger.setEnabled(config.isDebugLogging());
 
-                System.setErr(logger.getPrintStream());
+                //System.setErr(logger.getPrintStream());
 
                 if (config.isDarkMode()) {
                     FlatDarkLaf.setup();
@@ -270,11 +278,10 @@ public class HelperMain extends JPanel {
                 frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 frame.pack();
                 frame.setVisible(true);
-                JFileChooser test = new JFileChooser();
 
                 File updater = new File("HelperUpdater.jar");
                 String[] update = checkUpdates(major, minor, rev);
-                if (update.equals("true")) {
+                if (update[0].equals("true")) {
                     if (updater.exists()) {
                         JOptionPane.showMessageDialog(frame, "Update is available, click ok to apply");
 
@@ -520,6 +527,17 @@ public class HelperMain extends JPanel {
         }
 
         private void selectFile () {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
             JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -626,6 +644,17 @@ public class HelperMain extends JPanel {
         }
 
         private void selectFileTicket () {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
             JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -781,6 +810,93 @@ public class HelperMain extends JPanel {
             gridbackupParse();
         }
 
+        private void selectFileButton2() {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                filePath2.setText(selectedFile.getAbsolutePath());
+            }
+        }
+
+        private void pullBalance() {
+            File sandbox = null;
+            sandbox = new File(filePath2.getText());
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = null;
+            try {
+                db = dbf.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                logger.log(e.toString());
+                JOptionPane.showMessageDialog(new JFrame(), "Parsing sandbox failed:\n " + e.toString());
+            }
+            Document doc = null;
+            try {
+                doc = db.parse(sandbox);
+            } catch (SAXException e) {
+                logger.log(e.toString());
+            } catch (IOException e) {
+                logger.log(e.toString());
+            }
+
+            doc.getDocumentElement().normalize();
+            // list for fac information
+            ArrayList<Identity> identities = new ArrayList<>();
+
+            // organise the factions into two lists for easy shit later
+            NodeList identityList = doc.getElementsByTagName("MyObjectBuilder_Identity");
+            for (int i = 0; i < identityList.getLength(); i++) {
+                Node identity = identityList.item(i);
+                if (identity.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) identity;
+                    identities.add(new Identity(eElement.getElementsByTagName("DisplayName").item(0).getTextContent(), eElement.getElementsByTagName("IdentityId").item(0).getTextContent()));
+                }
+            }
+
+            for(Identity i : identities){
+                NodeList accountList = doc.getElementsByTagName("MyObjectBuilder_AccountEntry");
+                for (int j = 0; j < accountList.getLength(); j++) {
+                    Node account = accountList.item(j);
+                    if (account.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) account;
+                        if (eElement.getElementsByTagName("OwnerIdentifier").item(0).getTextContent().equalsIgnoreCase(i.getIdentityId())) {
+                            i.setBalance(eElement.getElementsByTagName("Balance").item(0).getTextContent());
+                        }
+                    }
+                }
+            }
+            StringBuilder s = new StringBuilder();
+            for(Identity identity : identities){
+                s.append(identity.getDisplayName());
+                s.append(",");
+                s.append(identity.getBalance());
+                if(includeName.isSelected()){
+                    s.append(",");
+                    s.append(identity.getIdentityId());
+                }
+                s.append("\n");
+                System.out.println(s.toString());
+            }
+            sandboxBalanceOutput.setText(s.toString());
+            System.out.println(s.toString());
+
+        }
+
+
+
+
         
         private void initComponents () {
             // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -876,6 +992,17 @@ public class HelperMain extends JPanel {
             filePath = new JTextArea();
             pullPositionButton = new JButton();
             includeType = new JCheckBox();
+            StationGPSCovnert2 = new JPanel();
+            scrollPane10 = new JScrollPane();
+            sandboxBalanceOutput = new JTextArea();
+            var hSpacer8 = new Spacer();
+            var vSpacer15 = new Spacer();
+            var vSpacer16 = new Spacer();
+            selectFileButton2 = new JButton();
+            scrollPane11 = new JScrollPane();
+            filePath2 = new JTextArea();
+            pullBalanceButton = new JButton();
+            includeName = new JCheckBox();
             BulkEditCovnert = new JPanel();
             label8 = new JLabel();
             scrollPane5 = new JScrollPane();
@@ -1707,6 +1834,76 @@ public class HelperMain extends JPanel {
                     }
                     tabbedPane2.addTab("Station GPS from Sandbox", StationGPSCovnert);
 
+                    //======== StationGPSCovnert2 ========
+                    {
+                        StationGPSCovnert2.setLayout(new GridLayoutManager(6, 22, new Insets(10, 10, 10, 10), -1, -1));
+
+                        //======== scrollPane10 ========
+                        {
+                            scrollPane10.setViewportView(sandboxBalanceOutput);
+                        }
+                        StationGPSCovnert2.add(scrollPane10, new GridConstraints(0, 0, 5, 20,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                        StationGPSCovnert2.add(hSpacer8, new GridConstraints(1, 2, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            null, null, null));
+                        StationGPSCovnert2.add(vSpacer15, new GridConstraints(3, 20, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
+                        StationGPSCovnert2.add(vSpacer16, new GridConstraints(4, 20, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK,
+                            GridConstraints.SIZEPOLICY_CAN_GROW | GridConstraints.SIZEPOLICY_WANT_GROW,
+                            null, null, null));
+
+                        //---- selectFileButton2 ----
+                        selectFileButton2.setText("Select Sandbox Location");
+                        selectFileButton2.addActionListener(e -> selectFileButton2());
+                        StationGPSCovnert2.add(selectFileButton2, new GridConstraints(5, 0, 1, 1,
+                            GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+
+                        //======== scrollPane11 ========
+                        {
+
+                            //---- filePath2 ----
+                            filePath2.setText("C:\\Users\\adams\\Desktop\\!!!Sigma Draconis\\Sandbox.sbc");
+                            scrollPane11.setViewportView(filePath2);
+                        }
+                        StationGPSCovnert2.add(scrollPane11, new GridConstraints(5, 1, 1, 1,
+                            GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            new Dimension(500, 25), null, null));
+
+                        //---- pullBalanceButton ----
+                        pullBalanceButton.setText("GO");
+                        pullBalanceButton.addActionListener(e -> pullBalance());
+                        StationGPSCovnert2.add(pullBalanceButton, new GridConstraints(5, 2, 1, 1,
+                            GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+
+                        //---- includeName ----
+                        includeName.setText("Include IdentityID");
+                        StationGPSCovnert2.add(includeName, new GridConstraints(5, 3, 1, 1,
+                            GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                            null, null, null));
+                    }
+                    tabbedPane2.addTab("Player Balance from Sandbox", StationGPSCovnert2);
+
                     //======== BulkEditCovnert ========
                     {
                         BulkEditCovnert.setLayout(new GridLayoutManager(7, 6, new Insets(10, 10, 10, 10), 5, -1));
@@ -1879,7 +2076,6 @@ public class HelperMain extends JPanel {
                             null, null, null));
                     }
                     tabbedPane2.addTab("CubeBlock Editor", CubeBlockEditor);
-                    tabbedPane2.setEnabledAt(3, false);
                 }
                 tabbedPane1.addTab("Admin", tabbedPane2);
             }
@@ -1954,6 +2150,14 @@ public class HelperMain extends JPanel {
         private JTextArea filePath;
         private JButton pullPositionButton;
         private JCheckBox includeType;
+        private JPanel StationGPSCovnert2;
+        private JScrollPane scrollPane10;
+        private JTextArea sandboxBalanceOutput;
+        private JButton selectFileButton2;
+        private JScrollPane scrollPane11;
+        private JTextArea filePath2;
+        private JButton pullBalanceButton;
+        private JCheckBox includeName;
         private JPanel BulkEditCovnert;
         private JLabel label8;
         private JScrollPane scrollPane5;

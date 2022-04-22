@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;

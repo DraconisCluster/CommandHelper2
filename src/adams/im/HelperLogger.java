@@ -29,8 +29,8 @@ public class HelperLogger {
     public void log(String s){
         if(enabled) {
             Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
-            format.applyPattern("yyyy-MM-dd kk:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("[yyyy-MM-dd kk:mm:ss]");
+            format.applyPattern("[yyyy-MM-dd kk:mm:ss]");
             String dateString = format.format(date.getTime());
             write.append(dateString + " : " + s + "\n");
         }
